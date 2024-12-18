@@ -1,6 +1,6 @@
 # Проект «Большое путешествие»
 
-* Студент: [Даниил П.](https://up.htmlacademy.ru/ecmascript-individual/2/user/2521447).
+* Студент: [Даниил П.](https://up.htmlacademy.ru/ecmascript-individual/2/user/2521447)
 * Наставник: `Неизвестно`.
 
 ---
