@@ -274,7 +274,7 @@ const mockEvents = [
   {
     type: TYPES[1],
     basePrice: getRandomNumberFromMinToMax(1000, 5000),
-    dateFrom: getRandomDate(new Date(2024, 0, 1), new Date(2024, 0, 2)),
+    dateFrom: getRandomDate(new Date(2024, 0, 3), new Date(2024, 0, 4)),
     dateTo: getRandomDate(new Date(2024, 0, 3), new Date(2024, 0, 4)),
     destination: mockDestination[1],
     isFavorite: true,
@@ -283,7 +283,7 @@ const mockEvents = [
   {
     type: TYPES[2],
     basePrice: getRandomNumberFromMinToMax(1000, 5000),
-    dateFrom: getRandomDate(new Date(2024, 0, 1), new Date(2024, 0, 2)),
+    dateFrom: getRandomDate(new Date(2024, 0, 5), new Date(2024, 0, 6)),
     dateTo: getRandomDate(new Date(2024, 0, 3), new Date(2024, 0, 4)),
     destination: mockDestination[2],
     isFavorite: false,
@@ -292,7 +292,7 @@ const mockEvents = [
 ];
 
 
-const getEvents = () => getRandomElementFromArray(mockEvents);
+const getRandomEvent = () => getRandomElementFromArray(mockEvents);
 
 
-export { getEvents };
+export { getRandomEvent };

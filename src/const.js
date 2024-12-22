@@ -10,5 +10,11 @@ const TYPES = [
   'restaurant'
 ];
 
+const FormatDate = {
+  DATE_TIME: 'YYYY-MM-DD',
+  DATE_EVENT: 'MMM D',
+  DATE_SCHEDULE: 'HH:mm',
+};
 
-export { TYPES };
+
+export { TYPES, FormatDate };
