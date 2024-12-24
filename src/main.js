@@ -2,6 +2,10 @@ import FilterView from './view/filter-view.js';
 import NewPointButtonView from './view/new-point-button-view.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import PointsModel from './model/points-model.js';
+import { getRandomPoint } from './mock/points.js';
+import { destinations } from './mock/destinations.js';
+import { offers } from './mock/offers.js';
+import { POINT_COUNT } from './const.js';
 import { render } from './render.js';
 
 
@@ -10,7 +14,13 @@ const siteFiltersElement = siteTripMainElement.querySelector('.trip-controls__fi
 const siteTripEventsElement = document.querySelector('.trip-events');
 
 
-const pointsModel = new PointsModel();
+const pointsModel = new PointsModel({
+  points: Array.from({ length: POINT_COUNT }, getRandomPoint),
+  destinations: destinations,
+  offers: offers
+});
+
+
 const boardPresenter = new BoardPresenter({
   pointListContainer: siteTripEventsElement,
   pointsModel,
