@@ -5,26 +5,28 @@ import { FormatDate } from '../const.js';
 
 function createPointTemplate(point) {
   const { type, destination, basePrice, isFavorite, dateFrom, dateTo } = point;
+
   const datetime = humanizeEventDate(dateFrom, FormatDate.DATE_TIME);
-  const eventDate = humanizeEventDate(dateFrom, FormatDate.DATE_EVENT);
-  const eventStart = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
-  const eventEnd = humanizeEventDate(dateTo, FormatDate.DATE_SCHEDULE);
+  const pointDate = humanizeEventDate(dateFrom, FormatDate.DATE_POINT);
+  const pointStart = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
+  const pointEnd = humanizeEventDate(dateTo, FormatDate.DATE_SCHEDULE);
+
   const favoriteClassName = isFavorite ? 'event__favorite-btn--active' : '';
 
   return (
     `
     <li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${datetime}">${eventDate}</time>
+        <time class="event__date" datetime="${datetime}">${pointDate}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${destination.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${datetime}T${eventStart}">${eventStart}</time>
+            <time class="event__start-time" datetime="${datetime}T${pointStart}">${pointStart}</time>
             &mdash;
-            <time class="event__end-time" datetime="${datetime}T${eventEnd}">${eventEnd}</time>
+            <time class="event__end-time" datetime="${datetime}T${pointEnd}">${pointEnd}</time>
           </p>
           <p class="event__duration">30M</p>
         </div>
