@@ -3,8 +3,9 @@ import { humanizeEventDate } from '../utils.js';
 import { FormatDate } from '../const.js';
 
 
-function createPointTemplate(point) {
-  const { type, destination, basePrice, isFavorite, dateFrom, dateTo } = point;
+function createPointTemplate(point, destination) {
+  const { type, basePrice, isFavorite, dateFrom, dateTo } = point;
+  const { name } = destination;
 
   const datetime = humanizeEventDate(dateFrom, FormatDate.DATE_TIME);
   const pointDate = humanizeEventDate(dateFrom, FormatDate.DATE_POINT);
@@ -21,7 +22,7 @@ function createPointTemplate(point) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} ${destination.name}</h3>
+        <h3 class="event__title">${type} ${name}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime="${datetime}T${pointStart}">${pointStart}</time>
@@ -58,12 +59,13 @@ function createPointTemplate(point) {
 
 
 export default class PointView {
-  constructor({ point }) {
+  constructor({ point, destination }) {
     this.point = point;
+    this.destination = destination;
   }
 
   getTemplate() {
-    return createPointTemplate(this.point);
+    return createPointTemplate(this.point, this.destination);
   }
 
   getElement() {
