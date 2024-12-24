@@ -21,4 +21,11 @@ export default class PointsModel {
     const destinations = this.getDestinations();
     return destinations.find((destination) => destination.id === id);
   }
+
+  getOffersSelected(point) {
+    const { type, offers: points } = point;
+    const pointsByType = this.getOffers().find((el) => el.type === type).offers;
+
+    return pointsByType.filter((item) => points.find((id) => id === item.id));
+  }
 }
