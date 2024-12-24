@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-function createNewEventButtonTemplate() {
+function createNewPointButtonTemplate() {
   return (
     `
       <button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>
@@ -9,9 +9,9 @@ function createNewEventButtonTemplate() {
 }
 
 
-export default class NewEventButtonView {
+export default class NewPointButtonView {
   getTemplate() {
-    return createNewEventButtonTemplate();
+    return createNewPointButtonTemplate();
   }
 
   getElement() {

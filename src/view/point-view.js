@@ -3,8 +3,8 @@ import { humanizeEventDate } from '../utils.js';
 import { FormatDate } from '../const.js';
 
 
-function createEventTemplate(event) {
-  const { type, destination, basePrice, isFavorite, dateFrom, dateTo } = event;
+function createPointTemplate(point) {
+  const { type, destination, basePrice, isFavorite, dateFrom, dateTo } = point;
   const datetime = humanizeEventDate(dateFrom, FormatDate.DATE_TIME);
   const eventDate = humanizeEventDate(dateFrom, FormatDate.DATE_EVENT);
   const eventStart = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
@@ -55,13 +55,13 @@ function createEventTemplate(event) {
 }
 
 
-export default class EventView {
-  constructor({ event }) {
-    this.event = event;
+export default class PointView {
+  constructor({ point }) {
+    this.point = point;
   }
 
   getTemplate() {
-    return createEventTemplate(this.event);
+    return createPointTemplate(this.point);
   }
 
   getElement() {

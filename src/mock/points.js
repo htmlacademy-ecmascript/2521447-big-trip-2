@@ -1,3 +1,6 @@
+import { getRandomElementFromArray } from '../utils.js';
+
+
 const points = [
   {
     'id': '5270ace2-fba1-40fb-aa64-b31f829bad0c',
@@ -301,4 +304,7 @@ const points = [
   }
 ];
 
-export { points };
+
+const getRandomPoint = () => getRandomElementFromArray(points);
+
+export { getRandomPoint };
