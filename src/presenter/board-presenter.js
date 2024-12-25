@@ -15,10 +15,17 @@ export default class BoardPresenter {
 
   init() {
     this.pointList = [...this.pointsModel.getPoints()];
+    this.point = this.pointList[0];
 
     render(new SortView(), this.pointListContainer);
     render(this.pointListComponent, this.pointListContainer);
-    render(new PointEditView(), this.pointListComponent.getElement());
+    render(new PointEditView({
+      point: this.point,
+      types: this.pointsModel.getTypes(),
+      destination: this.pointsModel.getDestinationById(this.point.destination),
+      offers: this.pointsModel.getOffersByType(this.point.type),
+      checkedList: this.pointsModel.getOffersSelected(this.point),
+    }), this.pointListComponent.getElement());
 
     for (let i = 0; i < this.pointList.length; i++) {
       const destination = this.pointsModel.getDestinationById(this.pointList[i].destination);

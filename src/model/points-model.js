@@ -17,15 +17,23 @@ export default class PointsModel {
     return this.offers;
   }
 
+  getTypes() {
+    return this.getOffers().map((item) => item.type);
+  }
+
+  getOffersByType(type) {
+    return this.offers.find((item) => item.type === type).offers;
+  }
+
   getDestinationById(id) {
     const destinations = this.getDestinations();
     return destinations.find((destination) => destination.id === id);
   }
 
   getOffersSelected(point) {
-    const { type, offers: points } = point;
-    const pointsByType = this.getOffers().find((el) => el.type === type).offers;
+    const { type, offers } = point;
+    const offersByType = this.getOffersByType(type);
 
-    return pointsByType.filter((item) => points.find((id) => id === item.id));
+    return offersByType.filter((item) => offers.find((id) => id === item.id));
   }
 }
