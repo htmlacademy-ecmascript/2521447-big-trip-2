@@ -5,7 +5,7 @@ const points = [
   {
     'id': '5270ace2-fba1-40fb-aa64-b31f829bad0c',
     'basePrice': 8581,
-    'dateFrom': '2024-12-14T19:13:11.060Z',
+    'dateFrom': '2024-11-14T19:13:11.060Z',
     'dateTo': '2024-12-16T01:45:11.060Z',
     'destination': 'c8eab9ce-c072-4114-9412-76f8023ba638',
     'isFavorite': false,
@@ -29,7 +29,7 @@ const points = [
   {
     'id': '73afb53e-2c93-460b-b301-5f0291ca85d2',
     'basePrice': 3339,
-    'dateFrom': '2024-12-20T11:35:11.060Z',
+    'dateFrom': '2024-12-21T11:35:11.060Z',
     'dateTo': '2024-12-22T05:23:11.060Z',
     'destination': '9bbe4200-020c-4f3c-9640-81648421f209',
     'isFavorite': true,
@@ -44,7 +44,7 @@ const points = [
   {
     'id': 'bc6d365a-7ff3-41f6-a2b7-ce03f40cb32f',
     'basePrice': 9946,
-    'dateFrom': '2024-12-23T10:58:11.060Z',
+    'dateFrom': '2024-10-23T10:58:11.060Z',
     'dateTo': '2024-12-24T09:13:11.060Z',
     'destination': '97ba1bc6-b161-4015-b0a5-e1f31a3b972d',
     'isFavorite': true,
@@ -54,7 +54,7 @@ const points = [
   {
     'id': 'c4a6bfb9-738c-4ff3-a678-5dd8e97eadea',
     'basePrice': 2632,
-    'dateFrom': '2024-12-24T16:40:11.060Z',
+    'dateFrom': '2024-12-21T16:40:11.060Z',
     'dateTo': '2024-12-25T20:17:11.060Z',
     'destination': '124c439f-1764-4bd2-917e-50973a77f227',
     'isFavorite': true,
@@ -67,7 +67,7 @@ const points = [
   {
     'id': '80800bd0-6c2a-4b04-b5da-ddd5555d3e08',
     'basePrice': 9375,
-    'dateFrom': '2024-12-26T14:02:11.060Z',
+    'dateFrom': '2024-12-21T14:02:11.060Z',
     'dateTo': '2024-12-27T18:52:11.060Z',
     'destination': '124c439f-1764-4bd2-917e-50973a77f227',
     'isFavorite': true,
@@ -77,7 +77,7 @@ const points = [
   {
     'id': 'e41a8867-7a91-4adb-912c-4b69abd4e2fb',
     'basePrice': 8216,
-    'dateFrom': '2024-12-28T11:46:11.060Z',
+    'dateFrom': '2024-12-20T11:46:11.060Z',
     'dateTo': '2024-12-29T01:40:11.060Z',
     'destination': '21a059e3-af4a-4881-a3cc-40a381484c44',
     'isFavorite': false,
@@ -91,7 +91,7 @@ const points = [
   {
     'id': 'd615183c-3c37-496d-b01a-d8dcc35a200d',
     'basePrice': 7099,
-    'dateFrom': '2024-12-29T12:03:11.060Z',
+    'dateFrom': '2024-12-23T12:03:11.060Z',
     'dateTo': '2024-12-30T06:27:11.060Z',
     'destination': 'c8eab9ce-c072-4114-9412-76f8023ba638',
     'isFavorite': true,
@@ -101,7 +101,7 @@ const points = [
   {
     'id': 'fadad7ed-b03d-47c0-9639-501e0d8df8df',
     'basePrice': 7453,
-    'dateFrom': '2024-12-30T14:34:11.060Z',
+    'dateFrom': '2024-11-30T14:34:11.060Z',
     'dateTo': '2024-12-31T05:45:11.060Z',
     'destination': '53b6b366-1de8-447a-93ae-e71dc7d59aa7',
     'isFavorite': true,
@@ -121,7 +121,7 @@ const points = [
   {
     'id': '4ac1ffac-78ee-4619-9db6-a0b593c196c8',
     'basePrice': 5293,
-    'dateFrom': '2025-01-03T06:19:11.060Z',
+    'dateFrom': '2025-01-02T06:19:11.060Z',
     'dateTo': '2025-01-03T14:36:11.060Z',
     'destination': '53b6b366-1de8-447a-93ae-e71dc7d59aa7',
     'isFavorite': false,
@@ -160,7 +160,7 @@ const points = [
   {
     'id': '9a365ed8-1a26-4992-876a-df248a2dd853',
     'basePrice': 9898,
-    'dateFrom': '2025-01-08T05:16:11.060Z',
+    'dateFrom': '2024-01-08T05:16:11.060Z',
     'dateTo': '2025-01-08T22:20:11.060Z',
     'destination': '2d1ec240-1e78-4183-b27e-7023f2ce9320',
     'isFavorite': false,

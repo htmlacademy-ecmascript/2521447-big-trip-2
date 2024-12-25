@@ -1,5 +1,5 @@
 import { createElement } from '../render.js';
-import { humanizeEventDate } from '../utils.js';
+import { humanizeEventDate, getDurationTime } from '../utils.js';
 import { FormatDate } from '../const.js';
 
 
@@ -42,7 +42,7 @@ function createPointTemplate(point, destination, offers) {
             &mdash;
             <time class="event__end-time" datetime="${datetime}T${pointEnd}">${pointEnd}</time>
           </p>
-          <p class="event__duration">30M</p>
+          <p class="event__duration">${getDurationTime(dateFrom, dateTo)}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
