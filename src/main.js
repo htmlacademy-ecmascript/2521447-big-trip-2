@@ -1,17 +1,34 @@
 import FilterView from './view/filter-view.js';
-import NewEventButtonView from './view/new-event-button-view.js';
+import NewPointButtonView from './view/new-point-button-view.js';
+import BoardPresenter from './presenter/board-presenter.js';
+import PointsModel from './model/points-model.js';
+import { getRandomPoint } from './mock/points.js';
+import { destinations } from './mock/destinations.js';
+import { offers } from './mock/offers.js';
+import { POINT_COUNT } from './const.js';
 import { render } from './render.js';
-import EventListPresenter from './presenter/event-list-presenter.js';
 
 
 const siteTripMainElement = document.querySelector('.trip-main');
 const siteFiltersElement = siteTripMainElement.querySelector('.trip-controls__filters');
 const siteTripEventsElement = document.querySelector('.trip-events');
 
-const eventsListPresenter = new EventListPresenter(siteTripEventsElement);
+
+const pointsModel = new PointsModel({
+  points: Array.from({ length: POINT_COUNT }, getRandomPoint),
+  destinations: destinations,
+  offers: offers
+});
+
+
+const boardPresenter = new BoardPresenter({
+  pointListContainer: siteTripEventsElement,
+  pointsModel,
+});
+
 
 render(new FilterView(), siteFiltersElement);
-render(new NewEventButtonView(), siteTripMainElement);
+render(new NewPointButtonView(), siteTripMainElement);
 
-eventsListPresenter.init();
 
+boardPresenter.init();
