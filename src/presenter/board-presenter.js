@@ -34,7 +34,7 @@ export default class BoardPresenter {
       render(new PointView({
         point: this.pointList[i],
         destination: destination,
-        selectedPoints: offers,
+        offers: offers,
       }), this.pointListComponent.getElement());
     }
   }

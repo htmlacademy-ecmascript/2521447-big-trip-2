@@ -3,8 +3,8 @@ import { humanizeEventDate } from '../utils.js';
 import { FormatDate } from '../const.js';
 
 
-function createSelectedPointTemplate(selectedPoint) {
-  const { title, price } = selectedPoint;
+function createSelectedPointTemplate(selectedOffer) {
+  const { title, price } = selectedOffer;
   return (
     `<li class="event__offer">
       <span class="event__offer-title">${title}</span>
@@ -16,7 +16,7 @@ function createSelectedPointTemplate(selectedPoint) {
 }
 
 
-function createPointTemplate(point, destination, selectedPoints) {
+function createPointTemplate(point, destination, offers) {
   const { type, basePrice, isFavorite, dateFrom, dateTo } = point;
   const { name } = destination;
 
@@ -49,7 +49,7 @@ function createPointTemplate(point, destination, selectedPoints) {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${selectedPoints.map((selectedPoint) => createSelectedPointTemplate(selectedPoint)).join('')}
+          ${offers.map((selectedOffer) => createSelectedPointTemplate(selectedOffer)).join('')}
         </ul>
         <button class="event__favorite-btn ${favoriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
@@ -68,14 +68,14 @@ function createPointTemplate(point, destination, selectedPoints) {
 
 
 export default class PointView {
-  constructor({ point, destination, selectedPoints }) {
+  constructor({ point, destination, offers }) {
     this.point = point;
     this.destination = destination;
-    this.selectedPoints = selectedPoints;
+    this.offers = offers;
   }
 
   getTemplate() {
-    return createPointTemplate(this.point, this.destination, this.selectedPoints);
+    return createPointTemplate(this.point, this.destination, this.offers);
   }
 
   getElement() {
