@@ -8,9 +8,11 @@ import { render } from '../render.js';
 export default class TripEventsPresenter {
   pointListComponent = new PointListView();
 
-  constructor({ pointListContainer, pointsModel }) {
+  constructor({ pointListContainer, pointsModel, destinationsModel, offersModel }) {
     this.pointListContainer = pointListContainer;
     this.pointsModel = pointsModel;
+    this.destinationsModel = destinationsModel;
+    this.offersModel = offersModel;
   }
 
   init() {
@@ -21,15 +23,15 @@ export default class TripEventsPresenter {
     render(this.pointListComponent, this.pointListContainer);
     render(new PointEditView({
       point: this.point,
-      types: this.pointsModel.getTypes(),
-      destination: this.pointsModel.getDestinationById(this.point.destination),
-      offers: this.pointsModel.getOffersByType(this.point.type),
-      checkedList: this.pointsModel.getOffersSelected(this.point),
+      types: this.offersModel.getTypes(),
+      destination: this.destinationsModel.getDestinationById(this.point.destination),
+      offers: this.offersModel.getOffersByType(this.point.type),
+      checkedList: this.offersModel.getOffersSelected(this.point),
     }), this.pointListComponent.getElement());
 
     for (let i = 0; i < this.pointList.length; i++) {
-      const destination = this.pointsModel.getDestinationById(this.pointList[i].destination);
-      const offers = this.pointsModel.getOffersSelected(this.pointList[i]);
+      const destination = this.destinationsModel.getDestinationById(this.pointList[i].destination);
+      const offers = this.offersModel.getOffersSelected(this.pointList[i]);
 
       render(new PointView({
         point: this.pointList[i],
