@@ -1,6 +1,6 @@
 import FilterView from './view/filter-view.js';
 import NewPointButtonView from './view/new-point-button-view.js';
-import BoardPresenter from './presenter/board-presenter.js';
+import TripEventsPresenter from './presenter/trip-events-presenter.js';
 import PointsModel from './model/points-model.js';
 import { getRandomPoint } from './mock/points.js';
 import { destinations } from './mock/destinations.js';
@@ -21,7 +21,7 @@ const pointsModel = new PointsModel({
 });
 
 
-const boardPresenter = new BoardPresenter({
+const tripEventsPresenter = new TripEventsPresenter({
   pointListContainer: siteTripEventsElement,
   pointsModel,
 });
@@ -31,4 +31,4 @@ render(new FilterView(), siteFiltersElement);
 render(new NewPointButtonView(), siteTripMainElement);
 
 
-boardPresenter.init();
+tripEventsPresenter.init();
