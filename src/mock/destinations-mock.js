@@ -1,4 +1,4 @@
-export const destinations = [
+export const destinationsMock = [
   {
     'id': '2d1ec240-1e78-4183-b27e-7023f2ce9320',
     'description': 'Kioto - famous for its crowded street markets with the best street food in Asia',

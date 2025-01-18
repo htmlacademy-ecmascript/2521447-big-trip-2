@@ -207,16 +207,22 @@ function createPointEditTemplate(point, types, destination, offers, checkedList)
 
 
 export default class PointEditView extends AbstractView {
+  #point = null;
+  #types = null;
+  #destination = null;
+  #offers = null;
+  #checkedList = null;
+
   constructor({ point, types, destination, offers, checkedList }) {
     super();
-    this.point = point;
-    this.types = types;
-    this.destination = destination;
-    this.offers = offers;
-    this.checkedList = checkedList;
+    this.#point = point;
+    this.#types = types;
+    this.#destination = destination;
+    this.#offers = offers;
+    this.#checkedList = checkedList;
   }
 
   get template() {
-    return createPointEditTemplate(this.point, this.types, this.destination, this.offers, this.checkedList);
+    return createPointEditTemplate(this.#point, this.#types, this.#destination, this.#offers, this.#checkedList);
   }
 }

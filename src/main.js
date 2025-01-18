@@ -15,10 +15,8 @@ const siteTripEventsElement = document.querySelector('.trip-events');
 const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
-
-
 const tripEventsPresenter = new TripEventsPresenter({
-  pointListContainer: siteTripEventsElement,
+  pointsContainer: siteTripEventsElement,
   pointsModel,
   destinationsModel,
   offersModel,

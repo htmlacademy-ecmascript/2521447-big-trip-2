@@ -1,11 +1,11 @@
-import { offersList } from '../mock/offers.js';
+import { offersMock } from '../mock/offers-mock.js';
 
 
 export default class OffersModel {
-  offers = offersList;
+  #offers = offersMock;
 
   getOffers() {
-    return this.offers;
+    return this.#offers;
   }
 
   getTypes() {
@@ -13,7 +13,7 @@ export default class OffersModel {
   }
 
   getOffersByType(type) {
-    return this.offers.find((item) => item.type === type).offers;
+    return this.#offers.find((item) => item.type === type).offers;
   }
 
   getOffersSelected(point) {

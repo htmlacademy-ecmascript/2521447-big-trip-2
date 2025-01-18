@@ -1,6 +1,3 @@
-const POINT_COUNT = 3;
-
-
 const FormatDate = {
   DATE_TIME: 'YYYY-MM-DD',
   DATE_POINT: 'MMM D',
@@ -14,4 +11,4 @@ const MillisecondsInValue = {
 };
 
 
-export { POINT_COUNT, FormatDate, MillisecondsInValue };
+export { FormatDate, MillisecondsInValue };
