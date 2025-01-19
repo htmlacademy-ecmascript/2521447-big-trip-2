@@ -1,7 +1,7 @@
 import { getRandomElementFromArray } from '../utils.js';
 
 
-const points = [
+const pointsMock = [
   {
     'id': '5270ace2-fba1-40fb-aa64-b31f829bad0c',
     'basePrice': 8581,
@@ -305,6 +305,6 @@ const points = [
 ];
 
 
-const getRandomPoint = () => getRandomElementFromArray(points);
+const getRandomPoint = () => getRandomElementFromArray(pointsMock);
 
 export { getRandomPoint };
