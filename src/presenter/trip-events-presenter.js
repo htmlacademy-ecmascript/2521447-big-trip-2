@@ -1,7 +1,7 @@
-import { render } from '../framework/render.js';
+import { render, replace } from '../framework/render.js';
 import PointsView from '../view/points-view.js';
 import SortView from '../view/sort-view.js';
-// import PointEditView from '../view/point-edit-view.js';
+import PointEditView from '../view/point-edit-view.js';
 import PointView from '../view/point-view.js';
 
 
@@ -10,7 +10,6 @@ export default class TripEventsPresenter {
   #pointsModel = null;
   #destinationsModel = null;
   #offersModel = null;
-  #point = null;
 
   #pointsComponent = new PointsView();
 
@@ -24,17 +23,9 @@ export default class TripEventsPresenter {
   }
 
   init() {
+    this.#renderPoints();
+
     this.#points = [...this.#pointsModel.points];
-    this.#point = this.#points[0];
-    render(new SortView(), this.#pointsContainer);
-    render(this.#pointsComponent, this.#pointsContainer);
-    // render(new PointEditView({
-    //   point: this.#point,
-    //   types: this.#offersModel.getTypes(),
-    //   destination: this.#destinationsModel.getDestinationById(this.#point.destination),
-    //   offers: this.#offersModel.getOffersByType(this.#point.type),
-    //   checkedList: this.#offersModel.getOffersSelected(this.#point),
-    // }), this.#pointsComponent.element);
 
     for (let i = 0; i < this.#points.length; i++) {
       const point = this.#points[i];
@@ -46,8 +37,49 @@ export default class TripEventsPresenter {
   }
 
   #renderPoint(point, destination, offers) {
-    const pointComponent = new PointView({ point, destination, offers });
+    const escKeyDownHandler = (evt) => {
+      if (evt.key === 'Escape') {
+        evt.preventDefault();
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    };
+
+    const pointComponent = new PointView({
+      point,
+      destination,
+      offers,
+      onEditClick: () => {
+        replacePointToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    const pointEditView = new PointEditView({
+      point,
+      types: this.#offersModel.getTypes(),
+      destination,
+      offers,
+      checkedList: this.#offersModel.getOffersSelected(point),
+      onFormSubmit: () => {
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    });
+
+    function replacePointToForm() {
+      replace(pointEditView, pointComponent);
+    }
+
+    function replaceFormToPoint() {
+      replace(pointComponent, pointEditView);
+    }
 
     render(pointComponent, this.#pointsComponent.element);
+  }
+
+  #renderPoints() {
+    render(new SortView(), this.#pointsContainer);
+    render(this.#pointsComponent, this.#pointsContainer);
   }
 }
