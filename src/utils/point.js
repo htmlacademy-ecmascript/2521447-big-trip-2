@@ -3,7 +3,7 @@ import duration from 'dayjs/plugin/duration.js';
 import { MillisecondsInValue } from '../const.js';
 
 
-const humanizeEventDate = (date, formatDate) => date ? dayjs(date).format(formatDate) : '';
+const humanizeEventDate = (date, dateFormat = 'DD-MM-YYYY') => date ? dayjs(date).format(dateFormat) : '';
 const formatString = (string) => string.at(0).toUpperCase() + string.slice(1);
 
 

@@ -5,10 +5,19 @@ const FormatDate = {
   DATE_SLASHED: 'YY/MM/DD'
 };
 
+
 const MillisecondsInValue = {
   MILLISECONDS_IN_HOUR: 1000 * 60 * 60,
   MILLISECONDS_IN_DAY: 1000 * 60 * 60 * 24,
 };
 
 
-export { FormatDate, MillisecondsInValue };
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+
+export { FormatDate, MillisecondsInValue, FilterType };

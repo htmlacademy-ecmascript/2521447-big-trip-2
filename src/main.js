@@ -5,6 +5,7 @@ import TripEventsPresenter from './presenter/trip-events-presenter.js';
 import PointsModel from './model/points-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
+import { generateFilter } from './mock/filters.js';
 
 
 const siteTripMainElement = document.querySelector('.trip-main');
@@ -22,8 +23,10 @@ const tripEventsPresenter = new TripEventsPresenter({
   offersModel,
 });
 
+const filters = generateFilter(pointsModel.points);
 
-render(new FilterView(), siteFiltersElement);
+
+render(new FilterView({ filters }), siteFiltersElement);
 render(new NewPointButtonView(), siteTripMainElement);
 
 
