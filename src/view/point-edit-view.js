@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { formatString, humanizeEventDate } from '../utils.js';
+import { formatString, humanizeEventDate } from '../utils/point.js';
 import { FormatDate } from '../const.js';
 
 
