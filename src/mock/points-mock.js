@@ -1,4 +1,4 @@
-import { getRandomElementFromArray } from '../utils.js';
+import { getRandomElementFromArray } from '../utils/common.js';
 
 
 const pointsMock = [

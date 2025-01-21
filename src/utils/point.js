@@ -1,12 +1,9 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration.js';
-import { MillisecondsInValue } from './const.js';
+import { MillisecondsInValue } from '../const.js';
 
 
-const getRandomElementFromArray = (elements) => elements[Math.floor(Math.random() * elements.length)];
-const getRandomNumberFromMinToMax = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-const getRandomDate = (start, end) => new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-const humanizeEventDate = (date, formatDate) => date ? dayjs(date).format(formatDate) : '';
+const humanizeEventDate = (date, dateFormat = 'DD-MM-YYYY') => date ? dayjs(date).format(dateFormat) : '';
 const formatString = (string) => string.at(0).toUpperCase() + string.slice(1);
 
 
@@ -34,9 +31,6 @@ const getDurationTime = (start, end) => {
 
 
 export {
-  getRandomElementFromArray,
-  getRandomNumberFromMinToMax,
-  getRandomDate,
   humanizeEventDate,
   formatString,
   getDurationTime
