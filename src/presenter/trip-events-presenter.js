@@ -1,4 +1,4 @@
-import { render, replace } from '../framework/render.js';
+import { render, replace, RenderPosition } from '../framework/render.js';
 import PointsView from '../view/points-view.js';
 import SortView from '../view/sort-view.js';
 import PointEditView from '../view/point-edit-view.js';
@@ -13,6 +13,8 @@ export default class TripEventsPresenter {
   #offersModel = null;
 
   #pointsComponent = new PointsView();
+  #sortComponent = new SortView();
+  #noPointComponent = new NoPointView();
 
   #points = [];
 
@@ -25,8 +27,25 @@ export default class TripEventsPresenter {
 
   init() {
     this.#points = [...this.#pointsModel.points];
-
+    this.#renderSort();
     this.#renderPoints();
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#pointsContainer, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderNoPoint() {
+    render(this.#noPointComponent, this.#pointsContainer);
+  }
+
+  #renderPoints() {
+    if (this.#points.length === 0) {
+      this.#renderNoPoint();
+      return;
+    }
+
+    render(this.#pointsComponent, this.#pointsContainer);
 
     for (let i = 0; i < this.#points.length; i++) {
       const point = this.#points[i];
@@ -77,16 +96,5 @@ export default class TripEventsPresenter {
     }
 
     render(pointComponent, this.#pointsComponent.element);
-  }
-
-  #renderPoints() {
-    render(new SortView(), this.#pointsContainer);
-
-    if (this.#points.length === 0) {
-      render(new NoPointView(), this.#pointsContainer);
-      return;
-    }
-
-    render(this.#pointsComponent, this.#pointsContainer);
   }
 }
