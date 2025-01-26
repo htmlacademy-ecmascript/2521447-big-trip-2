@@ -3,6 +3,7 @@ import SortView from '../view/sort-view.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import PointsView from '../view/points-view.js';
+import { updateItem } from '../utils/common.js';
 
 
 export default class TripEventsPresenter {
@@ -32,6 +33,37 @@ export default class TripEventsPresenter {
     this.#renderPoints();
   }
 
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+
+
+    this.#pointPresenters.get(updatedPoint.id).init({
+      point: updatedPoint,
+      destination: this.#destinationsModel.getDestinationById(updatedPoint.destination),
+      offers: this.#offersModel.getOffersSelected(updatedPoint),
+      types: this.#offersModel.getTypes(),
+      checkedList: this.#offersModel.getOffersSelected(updatedPoint),
+    });
+  };
+
+  #renderPoint(point, destination, offers, types, checkedList) {
+    const pointPresenter = new PointPresenter({
+      pointsContainer: this.#pointsComponent.element,
+      onDataChange: this.#handlePointChange,
+    });
+
+    pointPresenter.init({ point, destination, offers, types, checkedList });
+
+    this.#pointPresenters.set(point.id, pointPresenter);
+
+  }
+
+  #clearPoints() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
   #renderSort() {
     render(this.#sortComponent, this.#pointsContainer, RenderPosition.AFTERBEGIN);
   }
@@ -57,18 +89,5 @@ export default class TripEventsPresenter {
 
       this.#renderPoint(point, destination, offers, types, checkedList);
     }
-  }
-
-  #renderPoint(point, destination, offers, types, checkedList) {
-    const pointPresenter = new PointPresenter({ pointsContainer: this.#pointsComponent.element });
-
-    pointPresenter.init(point, destination, offers, types, checkedList);
-
-    this.#pointPresenters.set(point.id, pointPresenter);
-  }
-
-  #clearPoints() {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
   }
 }
