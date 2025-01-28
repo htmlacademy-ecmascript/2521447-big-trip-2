@@ -20,4 +20,13 @@ const FilterType = {
 };
 
 
-export { FormatDate, MillisecondsInValue, FilterType };
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers',
+};
+
+
+export { FormatDate, MillisecondsInValue, FilterType, SortType };
