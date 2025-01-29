@@ -16,7 +16,7 @@ function createSortItem(type) {
           value="sort-${type}" 
           ${checked}
         >
-        <label class="trip-sort__btn" for="sort-${type}">${type}</label>
+        <label class="trip-sort__btn" for="sort-${type}" data-sort-type=${type}>${type}</label>
       </div>
     `
   );
@@ -35,7 +35,24 @@ function createSortTemplate() {
 
 
 export default class SortView extends AbstractView {
+  #handleSortTypeChange = null;
+
+  constructor({ onSortTypeChange }) {
+    super();
+    this.#handleSortTypeChange = onSortTypeChange;
+    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+  }
+
   get template() {
     return createSortTemplate();
   }
+
+  #sortTypeChangeHandler = (evt) => {
+    if (evt.target.className !== 'trip-sort__btn') {
+      return;
+    }
+
+    evt.preventDefault();
+    this.#handleSortTypeChange(evt.target.dataset.sortType);
+  };
 }
