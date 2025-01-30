@@ -5,6 +5,9 @@ import { MillisecondsInValue } from '../const.js';
 
 const humanizeEventDate = (date, dateFormat = 'DD-MM-YYYY') => date ? dayjs(date).format(dateFormat) : '';
 const formatString = (string) => string.at(0).toUpperCase() + string.slice(1);
+const sortDateFromDown = (a, b) => dayjs(a.dateFrom).diff(dayjs(b.dateFrom));
+const sortPriceDown = (a, b) => b.basePrice - a.basePrice;
+const sortDurationTimeDown = (a, b) => dayjs(b.dateTo).diff(b.dateFrom) - dayjs(a.dateTo).diff(a.dateFrom);
 
 
 dayjs.extend(duration);
@@ -33,5 +36,8 @@ const getDurationTime = (start, end) => {
 export {
   humanizeEventDate,
   formatString,
-  getDurationTime
+  sortDateFromDown,
+  sortPriceDown,
+  sortDurationTimeDown,
+  getDurationTime,
 };

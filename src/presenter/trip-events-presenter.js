@@ -5,7 +5,7 @@ import PointPresenter from './point-presenter.js';
 import PointsView from '../view/points-view.js';
 import { updateItem } from '../utils/common.js';
 import { SortType } from '../const.js';
-import dayjs from 'dayjs';
+import { sortDateFromDown, sortDurationTimeDown, sortPriceDown } from '../utils/point.js';
 
 
 export default class TripEventsPresenter {
@@ -32,7 +32,7 @@ export default class TripEventsPresenter {
   }
 
   init() {
-    this.#points = [...this.#pointsModel.points];
+    this.#points = [...this.#pointsModel.points].sort(sortDateFromDown);
     this.#sourcedPoints = [...this.#pointsModel.points];
 
     this.#renderSort();
@@ -59,19 +59,13 @@ export default class TripEventsPresenter {
   #sortPoints(sortType) {
     switch (sortType) {
       case SortType.DAY:
-        this.#points.sort((a, b) => dayjs(a.dateFrom).diff(dayjs(b.dateFrom)));
-        break;
-      case SortType.EVENT:
-        this.#points.sort();
+        this.#points.sort(sortDateFromDown);
         break;
       case SortType.TIME:
-        this.#points.sort();
+        this.#points.sort(sortDurationTimeDown);
         break;
       case SortType.PRICE:
-        this.#points.sort((a, b) => b.basePrice - a.basePrice);
-        break;
-      case SortType.OFFERS:
-        this.#points.sort();
+        this.#points.sort(sortPriceDown);
         break;
     }
 

@@ -1,10 +1,8 @@
-import { SortType } from '../const.js';
+import { SortType, SortDisabled } from '../const.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 
 function createSortItem(type) {
-  const checked = type === SortType.DAY ? 'checked' : '';
-
   return (
     `
       <div class="trip-sort__item  trip-sort__item--${type}">
@@ -14,7 +12,8 @@ function createSortItem(type) {
           type="radio" 
           name="trip-sort"
           value="sort-${type}" 
-          ${checked}
+          ${type === SortType.DAY ? 'checked' : ''}
+          ${SortDisabled[type]}
         >
         <label class="trip-sort__btn" for="sort-${type}" data-sort-type=${type}>${type}</label>
       </div>
@@ -52,7 +51,6 @@ export default class SortView extends AbstractView {
       return;
     }
 
-    evt.preventDefault();
     this.#handleSortTypeChange(evt.target.dataset.sortType);
   };
 }

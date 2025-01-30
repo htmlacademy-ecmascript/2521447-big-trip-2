@@ -29,4 +29,13 @@ const SortType = {
 };
 
 
-export { FormatDate, MillisecondsInValue, FilterType, SortType };
+const SortDisabled = {
+  [SortType.DAY]: '',
+  [SortType.EVENT]: 'disabled',
+  [SortType.TIME]: '',
+  [SortType.PRICE]: '',
+  [SortType.OFFERS]: 'disabled',
+};
+
+
+export { FormatDate, MillisecondsInValue, FilterType, SortType, SortDisabled };
