@@ -160,7 +160,7 @@ const pointsMock = [
   {
     'id': '9a365ed8-1a26-4992-876a-df248a2dd853',
     'basePrice': 9898,
-    'dateFrom': '2024-01-08T05:16:11.060Z',
+    'dateFrom': '2025-01-08T05:16:11.060Z',
     'dateTo': '2025-01-08T22:20:11.060Z',
     'destination': '2d1ec240-1e78-4183-b27e-7023f2ce9320',
     'isFavorite': false,
