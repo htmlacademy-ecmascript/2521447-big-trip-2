@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { formatString, humanizeEventDate } from '../utils/point.js';
 import { FormatDate } from '../const.js';
 
@@ -82,22 +82,50 @@ function createPointSectionOffersTemplate(offers, offersChecked) {
 }
 
 
-function createPointTypeItemTemplate(type) {
+function createTypeItemTemplate(type, typeItem) {
+  const checked = type === typeItem ? 'checked' : '';
+  return (
+    `
+    <div class="event__type-item">
+      <input 
+        id="event-type-${typeItem}" 
+        class="event__type-input  visually-hidden" 
+        type="radio" 
+        name="event-type" 
+        value="${typeItem}"
+        ${checked}
+      >
+      <label 
+        class="event__type-label  
+        event__type-label--${typeItem}" 
+        for="event-type-${typeItem}">${formatString(typeItem)}
+      </label>
+    </div>
+    `
+  );
+}
+
+
+function createPointTypeTemplate(data) {
+  const { point, types } = data;
+  const { id, type } = point;
+
+
   return (`
-      <div class="event__type-item">
-        <input 
-          id="event-type-${type}-1" 
-          class="event__type-input  visually-hidden" 
-          type="radio" 
-          name="event-type" 
-          value="${type}"
-        >
-        <label 
-          class="event__type-label  
-          event__type-label--${type}" 
-          for="event-type-${type}-1">${formatString(type)}
-        </label>
-      </div>
+    <div class="event__type-wrapper">
+            <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
+              <span class="visually-hidden">Choose event type</span>
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+            </label>
+            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
+
+            <div class="event__type-list">
+              <fieldset class="event__type-group">
+                <legend class="visually-hidden">Event type</legend>
+                ${types.map((typeItem) => createTypeItemTemplate(type, typeItem)).join('')}
+              </fieldset>
+            </div>
+          </div>
     `);
 }
 
@@ -136,10 +164,10 @@ function createGroupTime(point) {
 }
 
 
-function createPointEditTemplate(point, types, destination, offers, offersChecked) {
+function createPointEditTemplate(data) {
+  const { point, destination, offers, offersChecked } = data;
 
-
-  const { id, type, basePrice } = point;
+  const { type, basePrice } = point;
   const { name } = destination;
 
   return (
@@ -147,21 +175,7 @@ function createPointEditTemplate(point, types, destination, offers, offersChecke
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
-          <div class="event__type-wrapper">
-            <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
-              <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
-            </label>
-            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
-
-            <div class="event__type-list">
-              <fieldset class="event__type-group">
-                <legend class="visually-hidden">Event type</legend>
-                ${types.map((item) => createPointTypeItemTemplate(item, offersChecked)).join('')}
-              </fieldset>
-            </div>
-          </div>
-
+          ${createPointTypeTemplate(data)}
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-1">
               ${type}
@@ -210,21 +224,14 @@ function createPointEditTemplate(point, types, destination, offers, offersChecke
 }
 
 
-export default class PointEditView extends AbstractView {
-  #point = null;
-  #types = null;
-  #destination = null;
-  #offers = null;
-  #offersChecked = null;
+export default class PointEditView extends AbstractStatefulView {
   #handleFormSubmit = null;
 
   constructor({ point, types, destination, offers, offersChecked, onFormSubmit }) {
     super();
-    this.#point = point;
-    this.#types = types;
-    this.#destination = destination;
-    this.#offers = offers;
-    this.#offersChecked = offersChecked;
+    this._setState(PointEditView.parsePointToState(
+      point, types, destination, offers, offersChecked
+    ));
     this.#handleFormSubmit = onFormSubmit;
 
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
@@ -232,11 +239,26 @@ export default class PointEditView extends AbstractView {
   }
 
   get template() {
-    return createPointEditTemplate(this.#point, this.#types, this.#destination, this.#offers, this.#offersChecked);
+    return createPointEditTemplate(this._state);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(PointEditView.parseStateToPoint(this._state));
   };
+
+  static parsePointToState(point, types, destination, offers, offersChecked) {
+    return {
+      point: { ...point },
+      types: Object.values({ ...types }),
+      destination: { ...destination },
+      offers: Object.values({ ...offers }),
+      offersChecked: Object.values({ ...offersChecked }),
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = { ...state };
+    return point;
+  }
 }

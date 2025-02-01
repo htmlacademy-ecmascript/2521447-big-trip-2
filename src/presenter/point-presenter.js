@@ -105,7 +105,7 @@ export default class PointPresenter {
     this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
   };
 
-  #handleFormSubmit = (point) => {
+  #handleFormSubmit = ({ point }) => {
     this.#handleDataChange(point);
     this.#replaceFormToPoint();
   };
