@@ -3,7 +3,7 @@ import { formatString, humanizeEventDate } from '../utils/point.js';
 import { FormatDate } from '../const.js';
 
 
-function createPointSelectorTemplate(point, checkedList) {
+function createPointSelectorTemplate(point, offersChecked) {
   const { id, title, price } = point;
 
   return (
@@ -14,7 +14,7 @@ function createPointSelectorTemplate(point, checkedList) {
         id="event-offer-luggage-${id}" 
         type="checkbox" 
         name="event-offer-luggage"
-        ${checkedList.find((item) => item.id === id) ? 'checked' : ''}
+        ${offersChecked.find((item) => item.id === id) ? 'checked' : ''}
       >
       <label class="event__offer-label" for="event-offer-luggage-${id}">
         <span class="event__offer-title">${title}</span>
@@ -66,14 +66,16 @@ function createPointSectionDestinationTemplate(destination) {
 }
 
 
-function createPointSectionOffersTemplate(offers, checkedList) {
+function createPointSectionOffersTemplate(offers, offersChecked) {
+
+
   return (
     `
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
-        ${offers.map((item) => createPointSelectorTemplate(item, checkedList)).join('')}
+        ${offers.map((item) => createPointSelectorTemplate(item, offersChecked)).join('')}
     </section>
   `
   );
@@ -134,7 +136,9 @@ function createGroupTime(point) {
 }
 
 
-function createPointEditTemplate(point, types, destination, offers, checkedList) {
+function createPointEditTemplate(point, types, destination, offers, offersChecked) {
+
+
   const { id, type, basePrice } = point;
   const { name } = destination;
 
@@ -153,7 +157,7 @@ function createPointEditTemplate(point, types, destination, offers, checkedList)
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
-                ${types.map((item) => createPointTypeItemTemplate(item, checkedList)).join('')}
+                ${types.map((item) => createPointTypeItemTemplate(item, offersChecked)).join('')}
               </fieldset>
             </div>
           </div>
@@ -195,7 +199,7 @@ function createPointEditTemplate(point, types, destination, offers, checkedList)
         </header>
         <section class="event__details">
         
-          ${offers.length ? createPointSectionOffersTemplate(offers, checkedList) : ''}
+          ${offers.length ? createPointSectionOffersTemplate(offers, offersChecked) : ''}
           
           ${createPointSectionDestinationTemplate(destination)}
         </section>
@@ -211,16 +215,16 @@ export default class PointEditView extends AbstractView {
   #types = null;
   #destination = null;
   #offers = null;
-  #checkedList = null;
+  #offersChecked = null;
   #handleFormSubmit = null;
 
-  constructor({ point, types, destination, offers, checkedList, onFormSubmit }) {
+  constructor({ point, types, destination, offers, offersChecked, onFormSubmit }) {
     super();
     this.#point = point;
     this.#types = types;
     this.#destination = destination;
     this.#offers = offers;
-    this.#checkedList = checkedList;
+    this.#offersChecked = offersChecked;
     this.#handleFormSubmit = onFormSubmit;
 
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
@@ -228,7 +232,7 @@ export default class PointEditView extends AbstractView {
   }
 
   get template() {
-    return createPointEditTemplate(this.#point, this.#types, this.#destination, this.#offers, this.#checkedList);
+    return createPointEditTemplate(this.#point, this.#types, this.#destination, this.#offers, this.#offersChecked);
   }
 
   #formSubmitHandler = (evt) => {

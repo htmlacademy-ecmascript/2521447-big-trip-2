@@ -26,7 +26,7 @@ export default class PointPresenter {
     this.#handleModeChange = onModeChange;
   }
 
-  init({ point, destination, offers, types, checkedList }) {
+  init({ point, destination, offers, types, offersChecked }) {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;
@@ -35,7 +35,7 @@ export default class PointPresenter {
     this.#pointComponent = new PointView({
       point: this.#point,
       destination,
-      offers,
+      offers: offersChecked,
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
@@ -45,7 +45,7 @@ export default class PointPresenter {
       types,
       destination,
       offers,
-      checkedList,
+      offersChecked,
       onFormSubmit: this.#handleFormSubmit,
     });
 
