@@ -3,8 +3,8 @@ import { formatString, humanizeEventDate } from '../utils/point.js';
 import { FormatDate } from '../const.js';
 
 
-function createPointSelectorTemplate(point, offersChecked) {
-  const { id, title, price } = point;
+function createOfferItemTemplate(offer, offersChecked) {
+  const { id, title, price } = offer;
 
   return (
     `
@@ -47,7 +47,7 @@ function createPictureContainer(pictures) {
   );
 }
 
-function createPointSectionDestinationTemplate(destination) {
+function createSectionDestinationTemplate(destination) {
   const { description, pictures } = destination;
 
   const isEmptyDestination = description || pictures.length ?
@@ -66,16 +66,15 @@ function createPointSectionDestinationTemplate(destination) {
 }
 
 
-function createPointSectionOffersTemplate(offers, offersChecked) {
-
-
+function createSectionOffersTemplate(offers, offersChecked) {
   return (
     `
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
-        ${offers.map((item) => createPointSelectorTemplate(item, offersChecked)).join('')}
+        ${offers.map((offer) => createOfferItemTemplate(offer, offersChecked)).join('')}
+      </div>
     </section>
   `
   );
@@ -107,31 +106,30 @@ function createTypeItemTemplate(type, typeItem) {
 
 
 function createPointTypeTemplate(point, types) {
-  const { id, type } = point;
+  const { type } = point;
 
 
-  return (`
+  return (
+    `
     <div class="event__type-wrapper">
-            <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
-              <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
-            </label>
-            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
-
-            <div class="event__type-list">
-              <fieldset class="event__type-group">
-                <legend class="visually-hidden">Event type</legend>
-                ${types.map((typeItem) => createTypeItemTemplate(type, typeItem)).join('')}
-              </fieldset>
-            </div>
-          </div>
-    `);
+      <label class="event__type  event__type-btn" for="event-type-toggle">
+        <span class="visually-hidden">Choose event type</span>
+        <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+      </label>
+      <input class="event__type-toggle  visually-hidden" id="event-type-toggle" type="checkbox">
+      <div class="event__type-list">
+        <fieldset class="event__type-group">
+          <legend class="visually-hidden">Event type</legend>
+          ${types.map((typeItem) => createTypeItemTemplate(type, typeItem)).join('')}
+        </fieldset>
+      </div>
+    </div>
+    `
+  );
 }
 
 
-function createGroupTime(point) {
-  const { dateFrom, dateTo } = point;
-
+function createPointGroupTimeTemplate(dateFrom, dateTo) {
   const dateFromSlashed = humanizeEventDate(dateFrom, FormatDate.DATE_SLASHED);
   const dateFromShedule = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
   const dateToSlashed = humanizeEventDate(dateTo, FormatDate.DATE_SLASHED);
@@ -140,19 +138,19 @@ function createGroupTime(point) {
   return (
     `
     <div class="event__field-group  event__field-group--time">
-      <label class="visually-hidden" for="event-start-time-1">From</label>
+      <label class="visually-hidden" for="event-start-time">From</label>
       <input 
         class="event__input  event__input--time" 
-        id="event-start-time-1" 
+        id="event-start-time" 
         type="text" 
         name="event-start-time" 
         value="${dateFromSlashed} ${dateFromShedule}"
       >
       &mdash;
-      <label class="visually-hidden" for="event-end-time-1">To</label>
+      <label class="visually-hidden" for="event-end-time">To</label>
       <input 
         class="event__input  event__input--time" 
-        id="event-end-time-1" 
+        id="event-end-time" 
         type="text" 
         name="event-end-time" 
         value="${dateToSlashed} ${dateToShedule}"
@@ -163,8 +161,60 @@ function createGroupTime(point) {
 }
 
 
+function createPointGroupDestinationTemplate(type, destination) {
+  const { id, name } = destination;
+
+  return (
+    `
+    <div class="event__field-group  event__field-group--destination">
+      <label 
+        class="event__label  event__type-output" 
+        for="event-destination-${id}"
+      >
+        ${type}
+      </label>
+      <input 
+        class="event__input  event__input--destination" 
+        id="event-destination-${id}" 
+        type="text" 
+        name="event-destination" 
+        value="${name}"
+        list="destination-list-1"
+      >
+      <datalist id="destination-list-1">
+        <option value="Amsterdam"></option>
+        <option value="Geneva"></option>
+        <option value="Chamonix"></option>
+      </datalist>
+    </div>
+    `
+  );
+}
+
+
+function createPointGroupPriceTemplate(price) {
+  return (
+    `
+    <div class="event__field-group  event__field-group--price">
+      <label class="event__label" for="event-price">
+        <span class="visually-hidden">Price</span>
+        &euro;
+      </label>
+      <input 
+        class="event__input event__input--price" 
+        id="event-price" 
+        type="text" 
+        name="event-price" 
+        value="${price}"
+      >
+    </div>
+    `
+  );
+}
+
+
 function createPointEditTemplate({ point, destination, types, offers, offersChecked }) {
-  const { type, basePrice } = point;
+  const { type, basePrice, dateFrom, dateTo } = point;
 
   return (
     `
@@ -172,44 +222,12 @@ function createPointEditTemplate({ point, destination, types, offers, offersChec
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           ${createPointTypeTemplate(point, types)}
-          <div class="event__field-group  event__field-group--destination">
-            <label 
-              class="event__label  event__type-output" 
-              for="event-destination-${destination.id}"
-            >
-              ${type}
-            </label>
-            <input 
-              class="event__input  event__input--destination" 
-              id="event-destination-${destination.id}" 
-              type="text" 
-              name="event-destination" 
-              value="${destination.name}" 
-              list="destination-list-1"
-            >
-            <datalist id="destination-list-1">
-              <option value="Amsterdam"></option>
-              <option value="Geneva"></option>
-              <option value="Chamonix"></option>
-            </datalist>
-          </div>
+          
+          ${createPointGroupDestinationTemplate(type, destination)}
 
-          ${createGroupTime(point)}
+          ${createPointGroupTimeTemplate(dateFrom, dateTo)}
 
-          <div class="event__field-group  event__field-group--price">
-            <label class="event__label" for="event-price-1">
-              <span class="visually-hidden">Price</span>
-              &euro;
-            </label>
-            <input 
-              class="event__input  
-              event__input--price" 
-              id="event-price-1" 
-              type="text" 
-              name="event-price" 
-              value="${basePrice}"
-            >
-          </div>
+          ${createPointGroupPriceTemplate(basePrice)}
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
           <button class="event__reset-btn" type="reset">Delete</button>
@@ -218,10 +236,9 @@ function createPointEditTemplate({ point, destination, types, offers, offersChec
           </button>
         </header>
         <section class="event__details">
-        
-          ${offers.length ? createPointSectionOffersTemplate(offers, offersChecked) : ''}
+          ${offers.length ? createSectionOffersTemplate(offers, offersChecked) : ''}
           
-          ${createPointSectionDestinationTemplate(destination)}
+          ${createSectionDestinationTemplate(destination)}
         </section>
       </form>
     </li>
