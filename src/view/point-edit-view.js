@@ -106,8 +106,7 @@ function createTypeItemTemplate(type, typeItem) {
 }
 
 
-function createPointTypeTemplate(data) {
-  const { point, types } = data;
+function createPointTypeTemplate(point, types) {
   const { id, type } = point;
 
 
@@ -164,23 +163,30 @@ function createGroupTime(point) {
 }
 
 
-function createPointEditTemplate(data) {
-  const { point, destination, offers, offersChecked } = data;
-
+function createPointEditTemplate({ point, destination, types, offers, offersChecked }) {
   const { type, basePrice } = point;
-  const { name } = destination;
 
   return (
     `
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
-          ${createPointTypeTemplate(data)}
+          ${createPointTypeTemplate(point, types)}
           <div class="event__field-group  event__field-group--destination">
-            <label class="event__label  event__type-output" for="event-destination-1">
+            <label 
+              class="event__label  event__type-output" 
+              for="event-destination-${destination.id}"
+            >
               ${type}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+            <input 
+              class="event__input  event__input--destination" 
+              id="event-destination-${destination.id}" 
+              type="text" 
+              name="event-destination" 
+              value="${destination.name}" 
+              list="destination-list-1"
+            >
             <datalist id="destination-list-1">
               <option value="Amsterdam"></option>
               <option value="Geneva"></option>
