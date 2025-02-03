@@ -51,7 +51,7 @@ export default class TripEventsPresenter {
       point: updatedPoint,
       destination: this.#destinationsModel.getDestinationById(updatedPoint.destination),
       offers: this.#offersModel.getOffersByType(updatedPoint.type),
-      types: this.#offersModel.getTypes(),
+      types: this.#offersModel.types,
       offersChecked: this.#offersModel.getOffersSelected(updatedPoint),
     });
   };
@@ -94,8 +94,8 @@ export default class TripEventsPresenter {
       pointsContainer: this.#pointsComponent.element,
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange,
+      allOffers: this.#offersModel.offers,
     });
-
     pointPresenter.init({ point, destination, offers, types, offersChecked });
 
     this.#pointPresenters.set(point.id, pointPresenter);
@@ -123,7 +123,7 @@ export default class TripEventsPresenter {
       const point = this.#points[i];
       const destination = this.#destinationsModel.getDestinationById(point.destination);
       const offers = this.#offersModel.getOffersByType(point.type);
-      const types = this.#offersModel.getTypes();
+      const types = this.#offersModel.types;
       const offersSelected = this.#offersModel.getOffersSelected(point);
 
       this.#renderPoint(point, destination, offers, types, offersSelected);

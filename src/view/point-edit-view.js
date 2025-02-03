@@ -250,22 +250,22 @@ function createPointEditTemplate(point, types, offers) {
 
 export default class PointEditView extends AbstractStatefulView {
   #types = null;
-  #offers = null;
+  #allOffers = null;
   #handleFormSubmit = null;
 
-  constructor({ point, types, destination, offers, offersChecked, onFormSubmit }) {
+  constructor({ point, types, destination, offers, offersChecked, onFormSubmit, allOffers }) {
     super();
     this.#types = types;
-    this.#offers = offers;
+    this.#allOffers = allOffers;
 
-    this._setState(PointEditView.parsePointToState(point, destination, offersChecked));
+    this._setState(PointEditView.parsePointToState(point, destination, offersChecked, offers));
     this.#handleFormSubmit = onFormSubmit;
 
     this._restoreHandlers();
   }
 
   get template() {
-    return createPointEditTemplate(this._state, this.#types, this.#offers);
+    return createPointEditTemplate(this._state, this.#types, this._state.offersByType);
   }
 
   _restoreHandlers() {
@@ -275,7 +275,7 @@ export default class PointEditView extends AbstractStatefulView {
       .forEach((pointTypeButton) => pointTypeButton
         .addEventListener('click', this.#pointTypeChangeHandler));
     this.element.querySelector('.event__input--price')
-      .addEventListener('input', this.#test);
+      .addEventListener('input', this.#priceInputHandler);
   }
 
   #formSubmitHandler = (evt) => {
@@ -287,18 +287,19 @@ export default class PointEditView extends AbstractStatefulView {
     evt.preventDefault();
     this.updateElement({
       type: evt.target.dataset.type,
+      offersByType: this.#allOffers.find((item) => item.type === evt.target.dataset.type).offers,
     });
   };
 
-  #test = (evt) => {
+  #priceInputHandler = (evt) => {
     evt.preventDefault();
     this._setState({
       basePrice: evt.target.value,
     });
   };
 
-  static parsePointToState(point, destination, offersChecked) {
-    return { ...point, destination, offers: offersChecked };
+  static parsePointToState(point, destination, offersChecked, offers) {
+    return { ...point, destination, offers: offersChecked, offersByType: offers };
   }
 
   static parseStateToPoint(state) {

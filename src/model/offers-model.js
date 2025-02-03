@@ -4,12 +4,12 @@ import { offersMock } from '../mock/offers-mock.js';
 export default class OffersModel {
   #offers = offersMock;
 
-  getOffers() {
+  get offers() {
     return this.#offers;
   }
 
-  getTypes() {
-    return this.getOffers().map((item) => item.type);
+  get types() {
+    return this.offers.map((item) => item.type);
   }
 
   getOffersByType(type) {
