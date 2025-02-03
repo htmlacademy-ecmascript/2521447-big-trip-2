@@ -11,12 +11,12 @@ function createOfferItemTemplate(offer, offersChecked) {
     <div class="event__offer-selector">
       <input 
         class="event__offer-checkbox  visually-hidden" 
-        id="event-offer-luggage-${id}" 
+        id="${id}" 
         type="checkbox" 
         name="event-offer-luggage"
         ${offersChecked.find((item) => item.id === id) ? 'checked' : ''}
       >
-      <label class="event__offer-label" for="event-offer-luggage-${id}">
+      <label class="event__offer-label" for="${id}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${price}</span>
@@ -215,7 +215,8 @@ function createPointGroupPriceTemplate(price) {
 
 
 function createPointEditTemplate(point, types, offers) {
-  const { type, basePrice, dateFrom, dateTo, destination, offers: offersChecked } = point;
+
+  const { type, basePrice, dateFrom, destination, dateTo, offers: offersChecked } = point;
 
   return (
     `
@@ -276,6 +277,9 @@ export default class PointEditView extends AbstractStatefulView {
         .addEventListener('click', this.#pointTypeChangeHandler));
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#priceInputHandler);
+    this.element.querySelectorAll('.event__offer-checkbox')
+      .forEach((offerButton) => offerButton
+        .addEventListener('click', this.#offerCheckboxHandler));
   }
 
   #formSubmitHandler = (evt) => {
@@ -287,7 +291,8 @@ export default class PointEditView extends AbstractStatefulView {
     evt.preventDefault();
     this.updateElement({
       type: evt.target.dataset.type,
-      offersByType: this.#allOffers.find((item) => item.type === evt.target.dataset.type).offers,
+      offersByType: this.#allOffers.find((offer) => offer.type === evt.target.dataset.type).offers,
+      offers: [],
     });
   };
 
@@ -295,6 +300,20 @@ export default class PointEditView extends AbstractStatefulView {
     evt.preventDefault();
     this._setState({
       basePrice: evt.target.value,
+    });
+  };
+
+  #offerCheckboxHandler = (evt) => {
+    const offersChecked = this._state.offers;
+
+    if (evt.target.checked) {
+      offersChecked.push(this._state.offersByType.find((offer) => offer.id === evt.target.id));
+    } else {
+      offersChecked.pop(this._state.offersByType.find((offer) => offer.id === evt.target.id));
+    }
+
+    this._setState({
+      offers: offersChecked,
     });
   };
 
