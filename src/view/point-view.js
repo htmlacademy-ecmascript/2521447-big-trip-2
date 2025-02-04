@@ -16,7 +16,7 @@ function createSelectedPointTemplate(selectedOffer) {
 }
 
 
-function createPointTemplate(point, destination, offers) {
+function createPointTemplate(point, destination, selectedOffers) {
   const { type, basePrice, isFavorite, dateFrom, dateTo } = point;
   const { name } = destination;
 
@@ -49,7 +49,7 @@ function createPointTemplate(point, destination, offers) {
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${offers.map((selectedOffer) => createSelectedPointTemplate(selectedOffer)).join('')}
+          ${selectedOffers.map((selectedOffer) => createSelectedPointTemplate(selectedOffer)).join('')}
         </ul>
         <button class="event__favorite-btn ${favoriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
@@ -69,15 +69,17 @@ function createPointTemplate(point, destination, offers) {
 export default class PointView extends AbstractView {
   #point = null;
   #destination = null;
-  #offers = null;
+  #availableOffers = null;
+  #selectedOffers = null;
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
-  constructor({ point, destination, offers, onEditClick, onFavoriteClick }) {
+  constructor({ point, destination, availableOffers, selectedOffers, onEditClick, onFavoriteClick }) {
     super();
     this.#point = point;
     this.#destination = destination;
-    this.#offers = offers;
+    this.#availableOffers = availableOffers;
+    this.#selectedOffers = selectedOffers;
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
 
@@ -88,7 +90,7 @@ export default class PointView extends AbstractView {
   }
 
   get template() {
-    return createPointTemplate(this.#point, this.#destination, this.#offers);
+    return createPointTemplate(this.#point, this.#destination, this.#selectedOffers);
   }
 
   #editClickHandler = (evt) => {

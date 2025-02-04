@@ -14,43 +14,57 @@ export default class PointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
 
-  #allOffers = [];
+  #sourcedOffers = [];
+  #sourcedDestinations = [];
+  #types = [];
+  #selectedOffers = [];
 
   #handleDataChange = null;
   #handleModeChange = null;
 
   #point = null;
+  #destination = null;
+  #availableOffers = null;
+
   #mode = Mode.DEFAULT;
 
-  constructor({ pointsContainer, onDataChange, onModeChange, allOffers }) {
+  constructor({ pointsContainer, sourcedOffers, sourcedDestinations, types, onDataChange, onModeChange }) {
     this.#pointsContainer = pointsContainer;
+    this.#sourcedOffers = sourcedOffers;
+    this.#sourcedDestinations = sourcedDestinations;
+    this.#types = types;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
-    this.#allOffers = allOffers;
   }
 
-  init({ point, destination, offers, types, offersChecked }) {
+  init({ point, destination, selectedOffers, availableOffers }) {
     this.#point = point;
+    this.#destination = destination;
+    this.#selectedOffers = selectedOffers;
+    this.#availableOffers = availableOffers;
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
     this.#pointComponent = new PointView({
       point: this.#point,
-      destination,
-      offers: offersChecked,
+      destination: this.#destination,
+      availableOffers: this.#availableOffers,
+      selectedOffers: this.#selectedOffers,
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
     this.#pointEditComponent = new PointEditView({
       point: this.#point,
-      types,
-      destination,
-      offers,
-      offersChecked,
+      destination: this.#destination,
+      availableOffers: this.#availableOffers,
+      sourcedDestinations: this.#sourcedDestinations,
+      sourcedOffers: this.#sourcedOffers,
+      selectedOffers: this.#selectedOffers,
+      types: this.#types,
+      onEditClick: this.#handleEditClick,
       onFormSubmit: this.#handleFormSubmit,
-      allOffers: this.#allOffers,
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {

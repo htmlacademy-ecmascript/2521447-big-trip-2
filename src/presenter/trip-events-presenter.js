@@ -19,10 +19,10 @@ export default class TripEventsPresenter {
   #pointsComponent = new PointsView();
 
   #points = [];
+  #sourcedPoints = [];
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
-  #sourcedPoints = [];
 
   constructor({ pointsContainer, pointsModel, destinationsModel, offersModel }) {
     this.#pointsContainer = pointsContainer;
@@ -49,10 +49,9 @@ export default class TripEventsPresenter {
 
     this.#pointPresenters.get(updatedPoint.id).init({
       point: updatedPoint,
-      destination: this.#destinationsModel.getDestinationById(updatedPoint.destination),
-      offers: this.#offersModel.getOffersByType(updatedPoint.type),
-      types: this.#offersModel.types,
-      offersChecked: this.#offersModel.getOffersSelected(updatedPoint),
+      destination: this.#destinationsModel.getDestinationById(updatedPoint.destination) ?? updatedPoint.destination,
+      selectedOffers: this.#offersModel.getOffersSelected(updatedPoint),
+      availableOffers: this.#offersModel.getOffersByType(updatedPoint.type),
     });
   };
 
@@ -86,17 +85,26 @@ export default class TripEventsPresenter {
     this.#sortComponent = new SortView({
       onSortTypeChange: this.#handleSortTypeChange,
     });
+
     render(this.#sortComponent, this.#pointsContainer, RenderPosition.AFTERBEGIN);
   }
 
-  #renderPoint(point, destination, offers, types, offersChecked) {
+  #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointsContainer: this.#pointsComponent.element,
+      sourcedOffers: this.#offersModel.offers,
+      sourcedDestinations: this.#destinationsModel.destinations,
+      types: this.#offersModel.types,
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange,
-      allOffers: this.#offersModel.offers,
     });
-    pointPresenter.init({ point, destination, offers, types, offersChecked });
+
+    pointPresenter.init({
+      point: point,
+      destination: this.#destinationsModel.getDestinationById(point.destination),
+      selectedOffers: this.#offersModel.getOffersSelected(point),
+      availableOffers: this.#offersModel.getOffersByType(point.type),
+    });
 
     this.#pointPresenters.set(point.id, pointPresenter);
 
@@ -119,14 +127,6 @@ export default class TripEventsPresenter {
       return;
     }
 
-    for (let i = 0; i < this.#points.length; i++) {
-      const point = this.#points[i];
-      const destination = this.#destinationsModel.getDestinationById(point.destination);
-      const offers = this.#offersModel.getOffersByType(point.type);
-      const types = this.#offersModel.types;
-      const offersSelected = this.#offersModel.getOffersSelected(point);
-
-      this.#renderPoint(point, destination, offers, types, offersSelected);
-    }
+    this.#points.map((point) => this.#renderPoint(point));
   }
 }
