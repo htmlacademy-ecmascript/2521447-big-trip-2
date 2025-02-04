@@ -18,9 +18,9 @@ const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
 const tripEventsPresenter = new TripEventsPresenter({
   pointsContainer: siteTripEventsElement,
-  pointsModel,
-  destinationsModel,
-  offersModel,
+  pointsModel: pointsModel,
+  destinationsModel: destinationsModel,
+  offersModel: offersModel,
 });
 
 const filters = generateFilter(pointsModel.points);
