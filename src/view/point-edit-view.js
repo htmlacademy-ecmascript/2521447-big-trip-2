@@ -278,6 +278,10 @@ export default class PointEditView extends AbstractStatefulView {
       this.#sourcedDestinations);
   }
 
+  reset(point) {
+    this.updateElement(PointEditView.parsePointToState(point));
+  }
+
   _restoreHandlers() {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formSubmitHandler);
