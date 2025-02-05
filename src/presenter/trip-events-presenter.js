@@ -49,7 +49,7 @@ export default class TripEventsPresenter {
 
     this.#pointPresenters.get(updatedPoint.id).init({
       point: updatedPoint,
-      destination: this.#destinationsModel.getDestinationById(updatedPoint.destination) ?? updatedPoint.destination,
+      destination: this.#destinationsModel.getDestinationById(updatedPoint.destination),
       selectedOffers: this.#offersModel.getOffersSelected(updatedPoint),
       availableOffers: this.#offersModel.getOffersByType(updatedPoint.type),
     });

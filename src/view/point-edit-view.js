@@ -173,7 +173,7 @@ function createPointGroupDestinationTemplate(type, destination, sourcedDestinati
         id="event-destination" 
         type="text" 
         name="event-destination" 
-        value="${destination.name || ''}"
+        value="${destination?.name || ''}"
         list="destination-list"
       >
       <datalist id="destination-list">
@@ -269,7 +269,13 @@ export default class PointEditView extends AbstractStatefulView {
   }
 
   get template() {
-    return createPointEditTemplate(this._state, this.#destination, this.#types, this.#availableOffers, this.#selectedOffers, this.#sourcedDestinations);
+    return createPointEditTemplate(
+      this._state,
+      this.#destination,
+      this.#types,
+      this.#availableOffers,
+      this.#selectedOffers,
+      this.#sourcedDestinations);
   }
 
   _restoreHandlers() {
@@ -298,16 +304,12 @@ export default class PointEditView extends AbstractStatefulView {
 
     if (newDestination) {
       this.#destination = newDestination;
-    } else {
-      this.#destination = {
-        id: null,
-        name: '',
-        description: '',
-        pictures: [],
-      };
-    }
+      this.updateElement({ destination: newDestination.id });
 
-    this.updateElement({ destination: this.#destination });
+    } else {
+      this.#destination = null;
+      this.updateElement({ destination: '' });
+    }
   };
 
   #pointTypeChangeHandler = (evt) => {
