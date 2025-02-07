@@ -8,6 +8,8 @@ const formatString = (string) => string.at(0).toUpperCase() + string.slice(1);
 const sortDateFromDown = (a, b) => dayjs(a.dateFrom).diff(dayjs(b.dateFrom));
 const sortPriceDown = (a, b) => b.basePrice - a.basePrice;
 const sortDurationTimeDown = (a, b) => dayjs(b.dateTo).diff(b.dateFrom) - dayjs(a.dateTo).diff(a.dateFrom);
+const getMaxDate = (a) => dayjs(a) - MillisecondsInValue.MILLISECONDS_IN_HOUR;
+const getMinDate = (a) => dayjs(a) + MillisecondsInValue.MILLISECONDS_IN_HOUR;
 
 
 dayjs.extend(duration);
@@ -40,4 +42,6 @@ export {
   sortPriceDown,
   sortDurationTimeDown,
   getDurationTime,
+  getMaxDate,
+  getMinDate,
 };
