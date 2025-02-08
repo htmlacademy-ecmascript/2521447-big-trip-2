@@ -1,3 +1,4 @@
+import Observable from '../framework/observable.js';
 import { getRandomPoint } from '../mock/points-mock.js';
 
 
@@ -10,7 +11,7 @@ while (points.length < POINT_COUNT) {
 }
 
 
-export default class PointsModel {
+export default class PointsModel extends Observable {
   #points = points;
 
   get points() {
