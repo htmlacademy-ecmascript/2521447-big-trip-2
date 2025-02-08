@@ -1,8 +1,9 @@
 const FormatDate = {
-  DATE_TIME: 'YYYY-MM-DD',
+  DATE_TIME: 'DD-MM-YYYY',
   DATE_POINT: 'MMM D',
   DATE_SCHEDULE: 'HH:mm',
-  DATE_SLASHED: 'YY/MM/DD'
+  DATE_SLASHED: 'DD/MM/YY',
+  DATE_PICKER_FORMAT: 'd/m/y H:i',
 };
 
 
