@@ -25,6 +25,8 @@ export default class TripPresenter {
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
@@ -47,13 +49,17 @@ export default class TripPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
-  #handlePointChange = (updatedPoint) => {
-    this.#pointPresenters.get(updatedPoint.id).init({
-      point: updatedPoint,
-      destination: this.#destinationsModel.getDestinationById(updatedPoint.destination),
-      selectedOffers: this.#offersModel.getOffersSelected(updatedPoint),
-      availableOffers: this.#offersModel.getOffersByType(updatedPoint.type),
+  #handleViewAction = (actionType, updateType, update) => {
+    this.#pointPresenters.get(update.id).init({
+      point: update,
+      destination: this.#destinationsModel.getDestinationById(update.destination),
+      selectedOffers: this.#offersModel.getOffersSelected(update),
+      availableOffers: this.#offersModel.getOffersByType(update.type),
     });
+  };
+
+  #handleModelEvent = (updatedType, data) => {
+    console.log(updatedType, data);
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -80,7 +86,7 @@ export default class TripPresenter {
       sourcedOffers: this.#offersModel.offers,
       sourcedDestinations: this.#destinationsModel.destinations,
       types: this.#offersModel.types,
-      onDataChange: this.#handlePointChange,
+      onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
     });
 
