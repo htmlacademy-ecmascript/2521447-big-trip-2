@@ -1,7 +1,7 @@
 import { render } from './framework/render.js';
 import FilterView from './view/filter-view.js';
 import NewPointButtonView from './view/new-point-button-view.js';
-import TripEventsPresenter from './presenter/trip-events-presenter.js';
+import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
@@ -16,8 +16,9 @@ const siteTripEventsElement = document.querySelector('.trip-events');
 const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
-const tripEventsPresenter = new TripEventsPresenter({
-  pointsContainer: siteTripEventsElement,
+
+const tripPresenter = new TripPresenter({
+  tripContainer: siteTripEventsElement,
   pointsModel: pointsModel,
   destinationsModel: destinationsModel,
   offersModel: offersModel,
@@ -30,4 +31,4 @@ render(new FilterView({ filters }), siteFiltersElement);
 render(new NewPointButtonView(), siteTripMainElement);
 
 
-tripEventsPresenter.init();
+tripPresenter.init();
