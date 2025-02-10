@@ -3,7 +3,7 @@ import SortView from '../view/sort-view.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import TripView from '../view/trip-view.js';
-import { SortType } from '../const.js';
+import { SortType, UpdateType, UserAction } from '../const.js';
 import { sortDateFromDown, sortDurationTimeDown, sortPriceDown } from '../utils/point.js';
 
 
@@ -50,6 +50,18 @@ export default class TripPresenter {
   };
 
   #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this.#pointsModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this.#pointsModel.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_POINT:
+        this.#pointsModel.deletePoint(updateType, update);
+        break;
+    }
+
     this.#pointPresenters.get(update.id).init({
       point: update,
       destination: this.#destinationsModel.getDestinationById(update.destination),
@@ -59,7 +71,20 @@ export default class TripPresenter {
   };
 
   #handleModelEvent = (updatedType, data) => {
-    console.log(updatedType, data);
+    switch (updatedType) {
+      case UpdateType.PATCH:
+        this.#pointPresenters.get(data.id).init({
+          point: data,
+          destination: this.#destinationsModel.getDestinationById(data.destination),
+          selectedOffers: this.#offersModel.getOffersSelected(data),
+          availableOffers: this.#offersModel.getOffersByType(data.type),
+        });
+        break;
+      case UpdateType.MINOR:
+        break;
+      case UpdateType.MAJOR:
+        break;
+    }
   };
 
   #handleSortTypeChange = (sortType) => {
