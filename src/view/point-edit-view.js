@@ -199,6 +199,7 @@ export default class PointEditView extends AbstractStatefulView {
   #types = null;
   #handleHideClick = null;
   #handleFormSubmit = null;
+  #handleDeleteClick = null;
   #datepickerFrom = null;
   #datepickerTo = null;
 
@@ -211,7 +212,9 @@ export default class PointEditView extends AbstractStatefulView {
     selectedOffers,
     types,
     onHideClick,
-    onFormSubmit }
+    onFormSubmit,
+    onDeleteClick,
+  }
   ) {
     super();
     this.#point = point;
@@ -223,6 +226,7 @@ export default class PointEditView extends AbstractStatefulView {
     this.#types = types;
     this.#handleHideClick = onHideClick;
     this.#handleFormSubmit = onFormSubmit;
+    this.#handleDeleteClick = onDeleteClick;
 
     this._setState(PointEditView.parsePointToState(point));
     this._restoreHandlers();
@@ -268,11 +272,18 @@ export default class PointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#inputDestinationChangeHandler);
     this.#setDatepicker();
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#formDeleteClickHandler);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(PointEditView.parseStateToPoint(this._state));
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(PointEditView.parseStateToPoint(this._state));
   };
 
   #formHideHandler = (evt) => {
