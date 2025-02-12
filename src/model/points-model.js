@@ -1,18 +1,8 @@
 import Observable from '../framework/observable.js';
-import { getRandomPoint } from '../mock/points-mock.js';
-
-
-const POINT_COUNT = 10;
-let points = [];
-
-while (points.length < POINT_COUNT) {
-  points.push(getRandomPoint());
-  points = points.filter((point, i, items) => items.indexOf(point) === i);
-}
-
+import { pointsMock } from '../mock/points-mock.js';
 
 export default class PointsModel extends Observable {
-  #points = points;
+  #points = pointsMock;
 
   get points() {
     return this.#points;
