@@ -1,18 +1,12 @@
 import { render } from './framework/render.js';
-import FilterView from './view/filter-view.js';
 import NewPointButtonView from './view/new-point-button-view.js';
 import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import FilterModel from './model/filter-model.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 
-const filters = [
-  {
-    type: 'everything',
-    count: 0,
-  },
-];
 
 const siteTripMainElement = document.querySelector('.trip-main');
 const siteFiltersElement = siteTripMainElement.querySelector('.trip-controls__filters');
@@ -32,13 +26,15 @@ const tripPresenter = new TripPresenter({
   offersModel: offersModel,
 });
 
+const filterPresenter = new FilterPresenter({
+  filterContainer: siteFiltersElement,
+  filterModel: filterModel,
+  pointsModel: pointsModel,
+});
 
-render(new FilterView({
-  filters,
-  currentFilterType: 'everything',
-  onFilterTypeChange: () => { },
-}), siteFiltersElement);
+
 render(new NewPointButtonView(), siteTripMainElement);
 
 
+filterPresenter.init();
 tripPresenter.init();
