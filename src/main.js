@@ -6,6 +6,7 @@ import PointsModel from './model/points-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import { generateFilter } from './mock/filters.js';
+import FilterModel from './model/filter-model.js';
 
 
 const siteTripMainElement = document.querySelector('.trip-main');
@@ -17,6 +18,7 @@ const siteBodyContainerElement = sitePageMainElement.querySelector('.page-body__
 const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
+const filterModel = new FilterModel();
 
 const tripPresenter = new TripPresenter({
   tripContainer: siteBodyContainerElement,
