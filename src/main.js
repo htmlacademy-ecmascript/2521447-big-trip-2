@@ -24,6 +24,7 @@ const tripPresenter = new TripPresenter({
   pointsModel: pointsModel,
   destinationsModel: destinationsModel,
   offersModel: offersModel,
+  filterModel,
 });
 
 const filterPresenter = new FilterPresenter({
