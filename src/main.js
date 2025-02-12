@@ -10,7 +10,8 @@ import { generateFilter } from './mock/filters.js';
 
 const siteTripMainElement = document.querySelector('.trip-main');
 const siteFiltersElement = siteTripMainElement.querySelector('.trip-controls__filters');
-const siteTripEventsElement = document.querySelector('.trip-events');
+const sitePageMainElement = document.querySelector('.page-main');
+const siteBodyContainerElement = sitePageMainElement.querySelector('.page-body__container');
 
 
 const pointsModel = new PointsModel();
@@ -18,7 +19,7 @@ const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
 
 const tripPresenter = new TripPresenter({
-  tripContainer: siteTripEventsElement,
+  tripContainer: siteBodyContainerElement,
   pointsModel: pointsModel,
   destinationsModel: destinationsModel,
   offersModel: offersModel,
