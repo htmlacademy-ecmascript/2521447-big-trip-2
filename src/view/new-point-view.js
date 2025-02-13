@@ -171,7 +171,7 @@ function createAddNewPointTemplate() {
 }
 
 
-export default class AddNewPointView extends AbstractView {
+export default class NewPointView extends AbstractView {
   get template() {
     return createAddNewPointTemplate();
   }
