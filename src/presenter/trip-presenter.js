@@ -7,6 +7,7 @@ import { FilterType, SortType, UpdateType, UserAction } from '../const.js';
 import { sortDateFromDown, sortDurationTimeDown, sortPriceDown } from '../utils/point.js';
 import PointsView from '../view/points-view.js';
 import { filter } from '../utils/filter.js';
+import NewPointPresenter from './new-point-presenter.js';
 
 
 export default class TripPresenter {
@@ -20,6 +21,7 @@ export default class TripPresenter {
   #noPointComponent = null;
   #tripComponent = new TripView();
   #pointsComponent = new PointsView();
+  #newPointPresenter = null;
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
@@ -31,6 +33,10 @@ export default class TripPresenter {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#filterModel = filterModel;
+
+    this.#newPointPresenter = new NewPointPresenter({
+      newPointContainer: this.#pointsComponent.element,
+    });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -53,6 +59,12 @@ export default class TripPresenter {
 
   init() {
     this.#renderTrip();
+  }
+
+  createPoint() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newPointPresenter.init();
   }
 
   #handleModeChange = () => {

@@ -24,7 +24,7 @@ const tripPresenter = new TripPresenter({
   pointsModel: pointsModel,
   destinationsModel: destinationsModel,
   offersModel: offersModel,
-  filterModel,
+  filterModel: filterModel,
 });
 
 const filterPresenter = new FilterPresenter({
@@ -33,9 +33,12 @@ const filterPresenter = new FilterPresenter({
   pointsModel: pointsModel,
 });
 
+const newPointButtonComponent = new NewPointButtonView(() => {
+  tripPresenter.createPoint();
+  newPointButtonComponent.element.disabled = true;
+});
 
-render(new NewPointButtonView(), siteTripMainElement);
-
+render(newPointButtonComponent, siteTripMainElement);
 
 filterPresenter.init();
 tripPresenter.init();
