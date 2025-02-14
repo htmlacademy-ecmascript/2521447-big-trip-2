@@ -2,7 +2,7 @@ import Observable from '../framework/observable.js';
 import { pointsMock } from '../mock/points-mock.js';
 
 export default class PointsModel extends Observable {
-  #points = pointsMock;
+  #points = pointsMock.slice(0, 3);
 
   get points() {
     return this.#points;

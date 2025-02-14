@@ -54,7 +54,7 @@ function createOffersTemplate(offers, offersChecked) {
   );
 }
 
-function createPointGroupTimeTemplate(dateFrom, dateTo) {
+function createPointGroupTimeTemplate(dateFrom, dateTo, id) {
   const dateFromSlashed = humanizeEventDate(dateFrom, FormatDate.DATE_SLASHED);
   const dateFromShedule = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
   const dateToSlashed = humanizeEventDate(dateTo, FormatDate.DATE_SLASHED);
@@ -63,19 +63,19 @@ function createPointGroupTimeTemplate(dateFrom, dateTo) {
   return (
     `
     <div class="event__field-group  event__field-group--time">
-      <label class="visually-hidden" for="event-start-time">From</label>
+      <label class="visually-hidden" for="event-start-time-${id}">From</label>
       <input 
         class="event__input  event__input--time" 
-        id="event-start-time" 
+        id="event-start-time-${id}" 
         type="text" 
         name="event-start-time" 
         value="${dateFromSlashed} ${dateFromShedule}"
       >
       &mdash;
-      <label class="visually-hidden" for="event-end-time">To</label>
+      <label class="visually-hidden" for="event-end-time-${id}">To</label>
       <input 
         class="event__input  event__input--time" 
-        id="event-end-time" 
+        id="event-end-time-${id}" 
         type="text" 
         name="event-end-time" 
         value="${dateToSlashed} ${dateToShedule}"
@@ -105,11 +105,11 @@ function createPointTypeTemplate(currentType, types) {
 }
 
 function createPointEditTemplate(point, destination, types, availableOffers, selectedOffers, sourcedDestinations) {
-  const { type, basePrice, dateFrom, dateTo } = point;
+  const { id, type, basePrice, dateFrom, dateTo } = point;
 
   const typeTemplate = createPointTypeTemplate(point.type, types);
   const datalistOptions = sourcedDestinations.map((item) => `<option value="${item.name}"></option>`).join('');
-  const timeTemplate = createPointGroupTimeTemplate(dateFrom, dateTo);
+  const timeTemplate = createPointGroupTimeTemplate(dateFrom, dateTo, id);
   const offersTemplate = availableOffers.length
     ? createOffersTemplate(availableOffers, selectedOffers)
     : '';
@@ -123,11 +123,11 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
           <div class="event__type-wrapper">
-            <label class="event__type  event__type-btn" for="event-type-toggle">
+            <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
               <span class="visually-hidden">Choose event type</span>
               <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
-            <input class="event__type-toggle  visually-hidden" id="event-type-toggle" type="checkbox">
+            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
@@ -138,19 +138,19 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
           <div class="event__field-group  event__field-group--destination">
             <label 
               class="event__label  event__type-output" 
-              for="event-destination"
+              for="event-destination-${id}"
             >
               ${type}
             </label>
             <input 
               class="event__input  event__input--destination" 
-              id="event-destination" 
+              id="event-destination-${id}"
               type="text" 
               name="event-destination" 
               value="${destination?.name || ''}"
               list="destination-list"
             >
-            <datalist id="destination-list">
+            <datalist id="destination-list-${destination?.id}">
               ${datalistOptions}
             </datalist>
           </div>       
@@ -158,13 +158,13 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
           ${timeTemplate}
 
           <div class="event__field-group  event__field-group--price">
-            <label class="event__label" for="event-price">
+            <label class="event__label" for="event-price-${id}">
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
             <input 
               class="event__input event__input--price" 
-              id="event-price" 
+              id="event-price-${id}" 
               type="text" 
               name="event-price" 
               value="${basePrice}"
@@ -357,7 +357,7 @@ export default class PointEditView extends AbstractStatefulView {
     };
 
     this.#datepickerFrom = flatpickr(
-      this.element.querySelector('#event-start-time'),
+      this.element.querySelector('input[name="event-start-time"]'),
       {
         ...datePickerConfig,
         maxDate: getMaxDate(this._state.dateTo),
@@ -366,7 +366,7 @@ export default class PointEditView extends AbstractStatefulView {
     );
 
     this.#datepickerTo = flatpickr(
-      this.element.querySelector('#event-end-time'),
+      this.element.querySelector('input[name="event-end-time"]'),
       {
         ...datePickerConfig,
         minDate: getMinDate(this._state.dateFrom),
