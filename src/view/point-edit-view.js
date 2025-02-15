@@ -150,7 +150,7 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
               value="${destination?.name || ''}"
               list="destination-list"
             >
-            <datalist id="destination-list-${destination?.id}">
+            <datalist id="destination-list">
               ${datalistOptions}
             </datalist>
           </div>       
@@ -165,7 +165,7 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
             <input 
               class="event__input event__input--price" 
               id="event-price-${id}" 
-              type="text" 
+              type="number" 
               name="event-price" 
               value="${basePrice}"
             >

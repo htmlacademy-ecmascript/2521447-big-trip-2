@@ -1,6 +1,3 @@
-import { getRandomElementFromArray } from '../utils/common.js';
-
-
 const pointsMock = [
   {
     'id': '5270ace2-fba1-40fb-aa64-b31f829bad0c',

@@ -1,5 +1,6 @@
 import { UpdateType, UserAction } from '../const.js';
 import { render, replace, remove } from '../framework/render.js';
+import { isEsc } from '../utils/common.js';
 import PointEditView from '../view/point-edit-view.js';
 import PointView from '../view/point-view.js';
 
@@ -99,7 +100,7 @@ export default class PointPresenter {
   }
 
   #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape') {
+    if (isEsc(evt.keyCode)) {
       evt.preventDefault();
       this.#pointEditComponent.reset(this.#point);
       this.#replaceFormToPoint();

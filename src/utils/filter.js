@@ -14,4 +14,4 @@ const filter = {
   [FilterType.PAST]: (points) => points.filter((point) => getDateToInMilliseconds(point) < today),
 };
 
-export { filter };
+export { filter, today };

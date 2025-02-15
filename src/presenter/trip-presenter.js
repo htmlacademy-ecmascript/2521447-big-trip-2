@@ -27,7 +27,7 @@ export default class TripPresenter {
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
 
-  constructor({ tripContainer, pointsModel, destinationsModel, offersModel, filterModel }) {
+  constructor({ tripContainer, pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy }) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
@@ -36,6 +36,11 @@ export default class TripPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       newPointContainer: this.#pointsComponent.element,
+      types: this.#offersModel.types,
+      sourcedOffers: this.#offersModel.offers,
+      sourcedDestinations: this.#destinationsModel.destinations,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy,
     });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);

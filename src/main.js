@@ -25,6 +25,7 @@ const tripPresenter = new TripPresenter({
   destinationsModel: destinationsModel,
   offersModel: offersModel,
   filterModel: filterModel,
+  onNewPointDestroy: handleNewPointFormClose,
 });
 
 const filterPresenter = new FilterPresenter({
@@ -33,10 +34,18 @@ const filterPresenter = new FilterPresenter({
   pointsModel: pointsModel,
 });
 
-const newPointButtonComponent = new NewPointButtonView(() => {
+const newPointButtonComponent = new NewPointButtonView({
+  onClick: handleNewPointButtonClick,
+});
+
+function handleNewPointFormClose() {
+  newPointButtonComponent.element.disabled = false;
+}
+
+function handleNewPointButtonClick() {
   tripPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
-});
+}
 
 render(newPointButtonComponent, siteTripMainElement);
 
