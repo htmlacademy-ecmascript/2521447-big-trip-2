@@ -2,20 +2,21 @@ const pointsMock = [
   {
     'id': '5270ace2-fba1-40fb-aa64-b31f829bad0c',
     'basePrice': 8581,
-    'dateFrom': '2024-11-14T19:13:11.060Z',
-    'dateTo': '2024-12-16T01:45:11.060Z',
+    'dateFrom': '2025-02-14T19:13:11.060Z',
+    'dateTo': '2025-02-15T01:45:11.060Z',
     'destination': 'c8eab9ce-c072-4114-9412-76f8023ba638',
     'isFavorite': false,
     'offers': [
-      '1e7ab78b-3faa-48b3-aab7-266373f30cde'
+      'f9cba921-201c-46e3-9f9c-181669310fc7',
+      '266854a6-32ce-43c2-afad-25fa2d1cff1f'
     ],
-    'type': 'taxi'
+    'type': 'restaurant'
   },
   {
     'id': 'd3e97e36-688d-40b0-8a08-5a440b369845',
     'basePrice': 1120,
-    'dateFrom': '2024-12-18T01:25:11.060Z',
-    'dateTo': '2024-12-19T16:44:11.060Z',
+    'dateFrom': '2025-02-15T01:25:11.060Z',
+    'dateTo': '2025-03-19T16:44:11.060Z',
     'destination': '7d2cc347-4428-45cb-b406-ef07ed787acc',
     'isFavorite': false,
     'offers': [
@@ -26,8 +27,8 @@ const pointsMock = [
   {
     'id': '73afb53e-2c93-460b-b301-5f0291ca85d2',
     'basePrice': 3339,
-    'dateFrom': '2024-12-21T11:35:11.060Z',
-    'dateTo': '2024-12-22T05:23:11.060Z',
+    'dateFrom': '2025-03-21T11:35:11.060Z',
+    'dateTo': '2025-03-22T05:23:11.060Z',
     'destination': '9bbe4200-020c-4f3c-9640-81648421f209',
     'isFavorite': true,
     'offers': [
