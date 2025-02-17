@@ -33,13 +33,13 @@ export default class NewPointPresenter {
       sourcedOffers: this.#sourcedOffers,
       sourcedDestinations: this.#sourcedDestinations,
       onFormSubmit: this.#handleFormSubmit,
-      onCancelFormButtonClick: this.#destroy,
+      onCancelFormButtonClick: this.destroy,
     });
 
     render(this.#newPointComponent, this.#newPointContainer, RenderPosition.AFTERBEGIN);
   }
 
-  #destroy = () => {
+  destroy = () => {
     if (this.#newPointComponent === null) {
       return;
     }
@@ -58,6 +58,6 @@ export default class NewPointPresenter {
       { id: crypto.randomUUID(), ...point },
     );
 
-    this.#destroy();
+    this.destroy();
   };
 }
