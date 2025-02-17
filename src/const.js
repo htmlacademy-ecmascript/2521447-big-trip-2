@@ -39,4 +39,34 @@ const SortDisabled = {
 };
 
 
-export { FormatDate, MillisecondsInValue, FilterType, SortType, SortDisabled };
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+const NoPointsTextType = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future points now',
+  [FilterType.PRESENT]: 'There are no present points now',
+  [FilterType.PAST]: 'There are no past points now',
+};
+
+
+export {
+  FormatDate,
+  MillisecondsInValue,
+  FilterType,
+  SortType,
+  SortDisabled,
+  UserAction,
+  UpdateType,
+  NoPointsTextType,
+};

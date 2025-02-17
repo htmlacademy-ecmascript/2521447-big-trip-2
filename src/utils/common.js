@@ -1,12 +1,8 @@
 const getRandomElementFromArray = (elements) => elements[Math.floor(Math.random() * elements.length)];
 
-
-function updateItem(items, update) {
-  return items.map((item) => item.id === update.id ? update : item);
-}
-
+const isEsc = (key) => key === 27;
 
 export {
   getRandomElementFromArray,
-  updateItem,
+  isEsc,
 };

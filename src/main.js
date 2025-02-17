@@ -1,33 +1,53 @@
 import { render } from './framework/render.js';
-import FilterView from './view/filter-view.js';
 import NewPointButtonView from './view/new-point-button-view.js';
-import TripEventsPresenter from './presenter/trip-events-presenter.js';
+import TripPresenter from './presenter/trip-presenter.js';
 import PointsModel from './model/points-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
-import { generateFilter } from './mock/filters.js';
+import FilterModel from './model/filter-model.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 
 
 const siteTripMainElement = document.querySelector('.trip-main');
 const siteFiltersElement = siteTripMainElement.querySelector('.trip-controls__filters');
-const siteTripEventsElement = document.querySelector('.trip-events');
+const sitePageMainElement = document.querySelector('.page-main');
+const siteBodyContainerElement = sitePageMainElement.querySelector('.page-body__container');
 
 
 const pointsModel = new PointsModel();
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
-const tripEventsPresenter = new TripEventsPresenter({
-  pointsContainer: siteTripEventsElement,
+const filterModel = new FilterModel();
+
+const tripPresenter = new TripPresenter({
+  tripContainer: siteBodyContainerElement,
   pointsModel: pointsModel,
   destinationsModel: destinationsModel,
   offersModel: offersModel,
+  filterModel: filterModel,
+  onNewPointDestroy: handleNewPointFormClose,
 });
 
-const filters = generateFilter(pointsModel.points);
+const filterPresenter = new FilterPresenter({
+  filterContainer: siteFiltersElement,
+  filterModel: filterModel,
+  pointsModel: pointsModel,
+});
 
+const newPointButtonComponent = new NewPointButtonView({
+  onClick: handleNewPointButtonClick,
+});
 
-render(new FilterView({ filters }), siteFiltersElement);
-render(new NewPointButtonView(), siteTripMainElement);
+function handleNewPointFormClose() {
+  newPointButtonComponent.element.disabled = false;
+}
 
+function handleNewPointButtonClick() {
+  tripPresenter.createPoint();
+  newPointButtonComponent.element.disabled = true;
+}
 
-tripEventsPresenter.init();
+render(newPointButtonComponent, siteTripMainElement);
+
+filterPresenter.init();
+tripPresenter.init();
