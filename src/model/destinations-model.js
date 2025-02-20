@@ -10,6 +10,14 @@ export default class DestinationsModel {
     return this.#destinations;
   }
 
+  async init() {
+    try {
+      this.#destinations = await this.#destinationsApiService.destinations;
+    } catch (err) {
+      this.#destinations = [];
+    }
+  }
+
   getDestinationById(id) {
     return this.destinations.find((destination) => destination.id === id);
   }
