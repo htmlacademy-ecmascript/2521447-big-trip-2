@@ -1,8 +1,10 @@
-import { destinationsMock } from '../mock/destinations-mock.js';
-
-
 export default class DestinationsModel {
-  #destinations = destinationsMock;
+  #destinationsApiService = null;
+  #destinations = [];
+
+  constructor({ destinationsApiService }) {
+    this.#destinationsApiService = destinationsApiService;
+  }
 
   get destinations() {
     return this.#destinations;
