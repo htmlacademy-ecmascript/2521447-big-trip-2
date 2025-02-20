@@ -109,6 +109,10 @@ export default class TripPresenter {
         this.#clearTrip({ resetSortType: true });
         this.#renderTrip();
         break;
+      case UpdateType.INIT:
+        remove(this.#noPointComponent);
+        this.#renderTrip();
+        break;
     }
   };
 
