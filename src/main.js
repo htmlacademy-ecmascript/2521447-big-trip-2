@@ -6,6 +6,8 @@ import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
+import PointsApiService from './api-service/points-api-service.js';
+import { AUTHORIZATION, BASE_URL } from './api.js';
 
 
 const siteTripMainElement = document.querySelector('.trip-main');
@@ -14,7 +16,9 @@ const sitePageMainElement = document.querySelector('.page-main');
 const siteBodyContainerElement = sitePageMainElement.querySelector('.page-body__container');
 
 
-const pointsModel = new PointsModel();
+const pointsModel = new PointsModel({
+  pointsApiService: new PointsApiService(BASE_URL, AUTHORIZATION)
+});
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
 const filterModel = new FilterModel();
@@ -51,3 +55,4 @@ render(newPointButtonComponent, siteTripMainElement);
 
 filterPresenter.init();
 tripPresenter.init();
+pointsModel.init();
