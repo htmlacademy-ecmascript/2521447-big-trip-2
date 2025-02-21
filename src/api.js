@@ -1,4 +1,4 @@
-const BASE_URL = 'https://24.objects.htmlacademy.pro/big-trip';
+const BASE_URL = 'https://23.objects.htmlacademy.pro/big-trip';
 const AUTHORIZATION = 'Basic jkasdiASdjd832ls';
 
 const Method = {
