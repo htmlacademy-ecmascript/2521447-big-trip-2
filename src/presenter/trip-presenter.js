@@ -36,9 +36,6 @@ export default class TripPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       newPointContainer: this.#pointsComponent.element,
-      types: this.#offersModel.types,
-      sourcedOffers: this.#offersModel.offers,
-      sourcedDestinations: this.#destinationsModel.destinations,
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy,
     });
@@ -69,7 +66,11 @@ export default class TripPresenter {
   createPoint() {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#newPointPresenter.init();
+    this.#newPointPresenter.init({
+      types: this.#offersModel.types,
+      sourcedOffers: this.#offersModel.offers,
+      sourcedDestinations: this.#destinationsModel.destinations,
+    });
   }
 
   #handleModeChange = () => {

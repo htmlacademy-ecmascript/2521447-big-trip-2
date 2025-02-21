@@ -57,11 +57,10 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.disabled = true;
 }
 
-render(newPointButtonComponent, siteTripMainElement);
-
 filterPresenter.init();
 tripPresenter.init();
 
-offersModel.init()
-  .then(() => pointsModel.init());
 destinationsModel.init();
+offersModel.init()
+  .then(() => pointsModel.init())
+  .then(() => render(newPointButtonComponent, siteTripMainElement));
