@@ -14,16 +14,17 @@ export default class NewPointPresenter {
 
   #newPointComponent = null;
 
-  constructor({ newPointContainer, types, sourcedOffers, sourcedDestinations, onDataChange, onDestroy }) {
+  constructor({ newPointContainer, onDataChange, onDestroy }) {
     this.#newPointContainer = newPointContainer;
-    this.#types = types;
-    this.#sourcedOffers = sourcedOffers;
-    this.#sourcedDestinations = sourcedDestinations;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
   }
 
-  init() {
+  init({ types, sourcedOffers, sourcedDestinations }) {
+    this.#types = types;
+    this.#sourcedOffers = sourcedOffers;
+    this.#sourcedDestinations = sourcedDestinations;
+
     if (this.#newPointComponent !== null) {
       return;
     }

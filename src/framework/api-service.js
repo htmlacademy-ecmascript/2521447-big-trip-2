@@ -3,35 +3,27 @@
  */
 export default class ApiService {
   /**
-   * @param {string} endPoint Адрес сервера
+   * @param {string} baseUrl Адрес сервера
    * @param {string} authorization Авторизационный токен
    */
-  constructor(endPoint, authorization) {
-    this._endPoint = endPoint;
+  constructor(baseUrl, authorization) {
+    this._baseUrl = baseUrl;
     this._authorization = authorization;
   }
 
   /**
    * Метод для отправки запроса к серверу
    * @param {Object} config Объект с настройками
-   * @param {string} config.url Адрес относительно сервера
+   * @param {string} config.route Адрес относительно сервера
    * @param {string} [config.method] Метод запроса
    * @param {string} [config.body] Тело запроса
    * @param {Headers} [config.headers] Заголовки запроса
    * @returns {Promise<Response>}
    */
-  async _load({
-    url,
-    method = 'GET',
-    body = null,
-    headers = new Headers(),
-  }) {
+  async _load({ route, method = 'GET', body = null, headers = new Headers() }) {
     headers.append('Authorization', this._authorization);
 
-    const response = await fetch(
-      `${this._endPoint}/${url}`,
-      {method, body, headers},
-    );
+    const response = await fetch(`${this._baseUrl}${route}`, { method, body, headers });
 
     try {
       ApiService.checkStatus(response);

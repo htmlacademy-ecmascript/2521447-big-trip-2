@@ -39,7 +39,7 @@ function createOffersTemplate(offers, offersChecked) {
               class="event__offer-checkbox  visually-hidden" 
               id="${offer.id}" 
               type="checkbox" 
-              name="event-offer-luggage"
+              name="${offer.title}"
               ${offersChecked.find((offerChecked) => offerChecked.id === offer.id) ? 'checked' : ''}
             >
             <label class="event__offer-label" for="${offer.id}">
@@ -268,7 +268,7 @@ export default class PointEditView extends AbstractStatefulView {
       .addEventListener('input', this.#priceInputHandler);
     this.element.querySelectorAll('.event__offer-checkbox')
       .forEach((offerButton) => offerButton
-        .addEventListener('click', this.#offerCheckboxHandler));
+        .addEventListener('change', this.#offerCheckboxHandler));
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#inputDestinationChangeHandler);
     this.#setDatepicker();
@@ -335,17 +335,18 @@ export default class PointEditView extends AbstractStatefulView {
 
   #offerCheckboxHandler = (evt) => {
     const selectedOffer = evt.target.id;
-    const selectedOffers = this._state.offers;
+    let selectedOffers = this._state.offers;
 
     if (evt.target.checked) {
       selectedOffers.push(selectedOffer);
     } else {
-      selectedOffers.pop(selectedOffer);
+      selectedOffers = selectedOffers.filter((offer) => offer !== selectedOffer);
     }
 
     this._setState({
       offers: selectedOffers,
     });
+
   };
 
   #setDatepicker() {
@@ -361,7 +362,7 @@ export default class PointEditView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         maxDate: getMaxDate(this._state.dateTo),
-        onChange: this.#dateFromInputHandler,
+        onClose: this.#dateFromInputHandler,
       }
     );
 
@@ -370,7 +371,7 @@ export default class PointEditView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         minDate: getMinDate(this._state.dateFrom),
-        onChange: this.#dateToInputHandler,
+        onClose: this.#dateToInputHandler,
       }
     );
   }
