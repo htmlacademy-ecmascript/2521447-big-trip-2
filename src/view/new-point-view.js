@@ -1,16 +1,15 @@
 import flatpickr from 'flatpickr';
 import { FormatDate } from '../const.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { formatString, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
+import { formatString, getDateToForBlankPoint, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
 
 import 'flatpickr/dist/themes/material_blue.css';
 import { isEsc } from '../utils/common.js';
-import { today } from '../utils/filter.js';
 
 const blankPoint = {
   'basePrice': 0,
-  'dateFrom': today,
-  'dateTo': getMinDate(today),
+  'dateFrom': new Date(),
+  'dateTo': getDateToForBlankPoint(new Date()),
   'destination': '',
   'isFavorite': false,
   'offers': [],
@@ -221,7 +220,6 @@ export default class NewPointView extends AbstractStatefulView {
   }
 
   get template() {
-    // console.log(this._state)
     return createAddNewPointTemplate(this._state);
   }
 
@@ -335,7 +333,7 @@ export default class NewPointView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         maxDate: getMaxDate(this._state.dateTo),
-        onChange: this.#dateFromInputHandler,
+        onClose: this.#dateFromInputHandler,
       }
     );
 
@@ -344,7 +342,7 @@ export default class NewPointView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         minDate: getMinDate(this._state.dateFrom),
-        onChange: this.#dateToInputHandler,
+        onClose: this.#dateToInputHandler,
       }
     );
   }
