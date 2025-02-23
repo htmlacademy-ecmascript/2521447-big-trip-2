@@ -4,7 +4,6 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { formatString, getDateToForBlankPoint, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
 
 import 'flatpickr/dist/themes/material_blue.css';
-import { isEsc } from '../utils/common.js';
 
 const blankPoint = {
   'basePrice': 0,
@@ -237,7 +236,6 @@ export default class NewPointView extends AbstractStatefulView {
       .addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#cancelButtonClickHandler);
-    document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#setDatepickers();
   }
 
@@ -250,14 +248,6 @@ export default class NewPointView extends AbstractStatefulView {
   #cancelButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleCloseFormButton();
-
-  };
-
-  #escKeyDownHandler = (evt) => {
-    if (isEsc(evt.keyCode)) {
-      evt.preventDefault();
-      this.#handleCloseFormButton();
-    }
   };
 
   removeElement() {
@@ -267,8 +257,6 @@ export default class NewPointView extends AbstractStatefulView {
     this.#datepickerFrom = null;
     this.#datepickerTo.destroy();
     this.#datepickerTo = null;
-
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
   #pointTypeChangeHandler = (evt) => {
