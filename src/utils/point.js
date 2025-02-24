@@ -10,7 +10,10 @@ const sortPriceDown = (a, b) => b.basePrice - a.basePrice;
 const sortDurationTimeDown = (a, b) => dayjs(b.dateTo).diff(b.dateFrom) - dayjs(a.dateTo).diff(a.dateFrom);
 const getMaxDate = (a) => dayjs(a) - MillisecondsInValue.MILLISECONDS_IN_HOUR;
 const getMinDate = (a) => dayjs(a) + MillisecondsInValue.MILLISECONDS_IN_HOUR;
-
+const getDateToForBlankPoint = (a) => {
+  const date = dayjs(a) + MillisecondsInValue.MILLISECONDS_IN_HOUR;
+  return new Date(date);
+};
 
 dayjs.extend(duration);
 
@@ -44,4 +47,5 @@ export {
   getDurationTime,
   getMaxDate,
   getMinDate,
+  getDateToForBlankPoint,
 };

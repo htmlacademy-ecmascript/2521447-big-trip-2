@@ -1,23 +1,21 @@
 import flatpickr from 'flatpickr';
 import { FormatDate } from '../const.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { formatString, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
+import { formatString, getDateToForBlankPoint, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
 
 import 'flatpickr/dist/themes/material_blue.css';
-import { isEsc } from '../utils/common.js';
-import { today } from '../utils/filter.js';
 
-const blankPoint = {
+const BLANK_POINT = {
   'basePrice': 0,
-  'dateFrom': today,
-  'dateTo': getMinDate(today),
+  'dateFrom': new Date(),
+  'dateTo': getDateToForBlankPoint(new Date()),
   'destination': '',
   'isFavorite': false,
   'offers': [],
   'type': 'taxi'
 };
 
-function createOffersTemplate(availableOffers, selectedOffers) {
+function createOffersTemplate(availableOffers, selectedOffers, isDisabled) {
   return (
     `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -31,6 +29,7 @@ function createOffersTemplate(availableOffers, selectedOffers) {
               type="checkbox" 
               name="event-offer-luggage"
               ${selectedOffers.find((selectedOffer) => selectedOffer === availableOffer.id) ? 'checked' : ''}
+              ${isDisabled ? 'disabled' : ''}
             >
             <label class="event__offer-label" for="${availableOffer.id}">
               <span class="event__offer-title">${availableOffer.title}</span>
@@ -44,7 +43,7 @@ function createOffersTemplate(availableOffers, selectedOffers) {
   );
 }
 
-function createPointTypeTemplate(point) {
+function createPointTypeTemplate(point, isDisabled) {
   const { type: currentType, types } = point;
 
   return types.map((type) => `
@@ -56,6 +55,7 @@ function createPointTypeTemplate(point) {
         name="event-type"
         value="${type}"
         ${currentType === type ? 'checked' : ''}
+        ${isDisabled ? 'disabled' : ''}
       />
       <label
         class="event__type-label event__type-label--${type}"
@@ -86,7 +86,7 @@ function createDestinationTemplate(destination) {
   );
 }
 
-function createTimeTemplate(point) {
+function createTimeTemplate(point, isDisabled) {
   const { id, dateFrom, dateTo } = point;
 
   const dateFromSlashed = humanizeEventDate(dateFrom, FormatDate.DATE_SLASHED);
@@ -104,6 +104,7 @@ function createTimeTemplate(point) {
         type="text" 
         name="event-start-time" 
         value="${dateFromSlashed} ${dateFromShedule}"
+        ${isDisabled ? 'disabled' : ''}
       >
       &mdash;
       <label class="visually-hidden" for="event-end-time-${id}">To</label>
@@ -113,6 +114,7 @@ function createTimeTemplate(point) {
         type="text" 
         name="event-end-time" 
         value="${dateToSlashed} ${dateToShedule}"
+        ${isDisabled ? 'disabled' : ''}
       >
     </div>
     `
@@ -120,12 +122,19 @@ function createTimeTemplate(point) {
 }
 
 function createAddNewPointTemplate(point) {
-  const { basePrice, availableOffers, offers, sourcedDestinations, destination } = point;
+  const { basePrice,
+    availableOffers,
+    offers,
+    sourcedDestinations,
+    destination,
+    isSaving,
+    isDisabled,
+  } = point;
 
-  const typeTemplate = createPointTypeTemplate(point);
-  const createTime = createTimeTemplate(point);
+  const typeTemplate = createPointTypeTemplate(point, isDisabled);
+  const createTime = createTimeTemplate(point, isDisabled);
   const offersTemplate = availableOffers.length
-    ? createOffersTemplate(availableOffers, offers)
+    ? createOffersTemplate(availableOffers, offers, isDisabled)
     : '';
   const datalistOptions = sourcedDestinations.map((item) => `<option value="${item.name}"></option>`).join('');
   const destinationTemplate = destination?.description || destination?.pictures?.length
@@ -142,7 +151,12 @@ function createAddNewPointTemplate(point) {
               <span class="visually-hidden">Choose event type</span>
               <img class="event__type-icon" width="17" height="17" src="img/icons/${point.type}.png" alt="Event type icon">
             </label>
-            <input class="event__type-toggle  visually-hidden" id="event-type-toggle" type="checkbox">
+            <input 
+              class="event__type-toggle  visually-hidden" 
+              id="event-type-toggle" 
+              type="checkbox"
+              ${isDisabled ? 'disabled' : ''}
+            >
 
             <div class="event__type-list">
               <fieldset class="event__type-group">
@@ -164,6 +178,7 @@ function createAddNewPointTemplate(point) {
               name="event-destination" 
               value="${destination?.name || ''}" 
               list="destination-list"
+              ${isDisabled ? 'disabled' : ''}
             >
             <datalist id="destination-list">
             ${datalistOptions}
@@ -183,11 +198,20 @@ function createAddNewPointTemplate(point) {
               type="number" 
               name="event-price" 
               value="${basePrice}"
+              ${isDisabled ? 'disabled' : ''}
             >
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Cancel</button>
+          <button 
+            class="event__save-btn  btn  btn--blue" 
+            type="submit"
+            ${isDisabled ? 'disabled' : ''}
+          >${isSaving ? 'Saving...' : 'Save'}</button>
+          <button 
+            class="event__reset-btn" 
+            type="reset"
+            ${isDisabled ? 'disabled' : ''}
+          >Cancel</button>
         </header>
         <section class="event__details">
           ${offersTemplate}
@@ -202,7 +226,7 @@ function createAddNewPointTemplate(point) {
 
 
 export default class NewPointView extends AbstractStatefulView {
-  #point = blankPoint;
+  #point = BLANK_POINT;
 
   #handleFormSubmit = null;
   #handleCloseFormButton = null;
@@ -221,7 +245,6 @@ export default class NewPointView extends AbstractStatefulView {
   }
 
   get template() {
-    // console.log(this._state)
     return createAddNewPointTemplate(this._state);
   }
 
@@ -239,7 +262,6 @@ export default class NewPointView extends AbstractStatefulView {
       .addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#cancelButtonClickHandler);
-    document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#setDatepickers();
   }
 
@@ -252,14 +274,6 @@ export default class NewPointView extends AbstractStatefulView {
   #cancelButtonClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleCloseFormButton();
-
-  };
-
-  #escKeyDownHandler = (evt) => {
-    if (isEsc(evt.keyCode)) {
-      evt.preventDefault();
-      this.#handleCloseFormButton();
-    }
   };
 
   removeElement() {
@@ -269,8 +283,6 @@ export default class NewPointView extends AbstractStatefulView {
     this.#datepickerFrom = null;
     this.#datepickerTo.destroy();
     this.#datepickerTo = null;
-
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
   #pointTypeChangeHandler = (evt) => {
@@ -335,7 +347,7 @@ export default class NewPointView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         maxDate: getMaxDate(this._state.dateTo),
-        onChange: this.#dateFromInputHandler,
+        onClose: this.#dateFromInputHandler,
       }
     );
 
@@ -344,7 +356,7 @@ export default class NewPointView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         minDate: getMinDate(this._state.dateFrom),
-        onChange: this.#dateToInputHandler,
+        onClose: this.#dateToInputHandler,
       }
     );
   }
@@ -356,6 +368,8 @@ export default class NewPointView extends AbstractStatefulView {
       sourcedOffers,
       availableOffers: sourcedOffers.find((item) => item.type === point.type).offers,
       sourcedDestinations,
+      isDisabled: false,
+      isSaving: false,
     };
   }
 
@@ -366,6 +380,8 @@ export default class NewPointView extends AbstractStatefulView {
     delete point.sourcedOffers;
     delete point.availableOffers;
     delete point.sourcedDestinations;
+    delete point.isDisabled;
+    delete point.isSaving;
 
     return point;
   }

@@ -27,7 +27,7 @@ function createDestinationTemplate(destination) {
   );
 }
 
-function createOffersTemplate(offers, offersChecked) {
+function createOffersTemplate(offers, offersChecked, isDisabled) {
   return (
     `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -41,6 +41,7 @@ function createOffersTemplate(offers, offersChecked) {
               type="checkbox" 
               name="${offer.title}"
               ${offersChecked.find((offerChecked) => offerChecked.id === offer.id) ? 'checked' : ''}
+              ${isDisabled ? 'disabled' : ''}
             >
             <label class="event__offer-label" for="${offer.id}">
               <span class="event__offer-title">${offer.title}</span>
@@ -54,7 +55,7 @@ function createOffersTemplate(offers, offersChecked) {
   );
 }
 
-function createPointGroupTimeTemplate(dateFrom, dateTo, id) {
+function createPointGroupTimeTemplate(dateFrom, dateTo, id, isDisabled) {
   const dateFromSlashed = humanizeEventDate(dateFrom, FormatDate.DATE_SLASHED);
   const dateFromShedule = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
   const dateToSlashed = humanizeEventDate(dateTo, FormatDate.DATE_SLASHED);
@@ -70,6 +71,7 @@ function createPointGroupTimeTemplate(dateFrom, dateTo, id) {
         type="text" 
         name="event-start-time" 
         value="${dateFromSlashed} ${dateFromShedule}"
+        ${isDisabled ? 'disabled' : ''}
       >
       &mdash;
       <label class="visually-hidden" for="event-end-time-${id}">To</label>
@@ -79,13 +81,14 @@ function createPointGroupTimeTemplate(dateFrom, dateTo, id) {
         type="text" 
         name="event-end-time" 
         value="${dateToSlashed} ${dateToShedule}"
+        ${isDisabled ? 'disabled' : ''}
       >
     </div>
     `
   );
 }
 
-function createPointTypeTemplate(currentType, types) {
+function createPointTypeTemplate(currentType, types, isDisabled) {
   return types.map((type) => `
     <div class="event__type-item">
       <input 
@@ -95,6 +98,7 @@ function createPointTypeTemplate(currentType, types) {
         name="event-type" 
         value="${type}"
         ${currentType === type ? 'checked' : ''}
+        ${isDisabled ? 'disabled' : ''}
       />
       <label 
         class="event__type-label event__type-label--${type}" 
@@ -105,13 +109,22 @@ function createPointTypeTemplate(currentType, types) {
 }
 
 function createPointEditTemplate(point, destination, types, availableOffers, selectedOffers, sourcedDestinations) {
-  const { id, type, basePrice, dateFrom, dateTo } = point;
+  const {
+    id,
+    type,
+    basePrice,
+    dateFrom,
+    dateTo,
+    isDisabled,
+    isSaving,
+    isDeleting,
+  } = point;
 
-  const typeTemplate = createPointTypeTemplate(point.type, types);
+  const typeTemplate = createPointTypeTemplate(point.type, types, isDisabled);
   const datalistOptions = sourcedDestinations.map((item) => `<option value="${item.name}"></option>`).join('');
-  const timeTemplate = createPointGroupTimeTemplate(dateFrom, dateTo, id);
+  const timeTemplate = createPointGroupTimeTemplate(dateFrom, dateTo, id, isDisabled);
   const offersTemplate = availableOffers.length
-    ? createOffersTemplate(availableOffers, selectedOffers)
+    ? createOffersTemplate(availableOffers, selectedOffers, isDisabled)
     : '';
   const destinationTemplate = destination?.description || destination?.pictures?.length
     ? createDestinationTemplate(destination)
@@ -127,7 +140,12 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
               <span class="visually-hidden">Choose event type</span>
               <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
-            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
+            <input 
+              class="event__type-toggle  visually-hidden" 
+              id="event-type-toggle-${id}" 
+              type="checkbox"
+              ${isDisabled ? 'disabled' : ''}
+            >
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
@@ -149,6 +167,7 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
               name="event-destination" 
               value="${destination?.name || ''}"
               list="destination-list"
+              ${isDisabled ? 'disabled' : ''}
             >
             <datalist id="destination-list">
               ${datalistOptions}
@@ -168,11 +187,20 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
               type="number" 
               name="event-price" 
               value="${basePrice}"
+              ${isDisabled ? 'disabled' : ''}
             >
           </div>
           
-          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button 
+            class="event__save-btn  btn  btn--blue" 
+            type="submit"
+            ${isDisabled ? 'disabled' : ''}
+          >${isSaving ? 'Saving...' : 'Save'}</button>
+          <button 
+            class="event__reset-btn" 
+            type="reset"
+            ${isDisabled ? 'disabled' : ''}
+          >${isDeleting ? 'Deleting...' : 'Delete'}</button>
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
           </button>
@@ -377,11 +405,21 @@ export default class PointEditView extends AbstractStatefulView {
   }
 
   static parsePointToState(point) {
-    return { ...point };
+    return {
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
   }
 
   static parseStateToPoint(state) {
     const point = { ...state };
+
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
     return point;
   }
 }

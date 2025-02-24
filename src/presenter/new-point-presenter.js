@@ -1,5 +1,6 @@
 import { UpdateType, UserAction } from '../const.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
+import { isEsc } from '../utils/common.js';
 import NewPointView from '../view/new-point-view.js';
 
 
@@ -34,13 +35,15 @@ export default class NewPointPresenter {
       sourcedOffers: this.#sourcedOffers,
       sourcedDestinations: this.#sourcedDestinations,
       onFormSubmit: this.#handleFormSubmit,
-      onCancelFormButtonClick: this.destroy,
+      onCancelFormButtonClick: this.#handleCancelFormButton,
     });
 
     render(this.#newPointComponent, this.#newPointContainer, RenderPosition.AFTERBEGIN);
+
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  destroy = () => {
+  destroy() {
     if (this.#newPointComponent === null) {
       return;
     }
@@ -50,15 +53,42 @@ export default class NewPointPresenter {
     remove(this.#newPointComponent);
     this.#newPointComponent = null;
 
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  }
+
+  setSaving() {
+    this.#newPointComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#newPointComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+      });
+    };
+
+    this.#newPointComponent.shake(resetFormState);
+  }
+
+  #handleCancelFormButton = () => {
+    this.destroy();
   };
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      { id: crypto.randomUUID(), ...point },
+      point,
     );
+  };
 
-    this.destroy();
+  #escKeyDownHandler = (evt) => {
+    if (isEsc(evt.keyCode)) {
+      this.destroy();
+    }
   };
 }
