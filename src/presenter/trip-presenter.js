@@ -10,6 +10,7 @@ import { filter } from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import LoadingView from '../view/loading-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import InfoPresenter from './info-presenter.js';
 
 
 export default class TripPresenter {
@@ -25,6 +26,7 @@ export default class TripPresenter {
   #pointsComponent = new PointsView();
   #loadingComponent = new LoadingView();
   #newPointPresenter = null;
+  #infoPresenter = null;
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
@@ -35,7 +37,7 @@ export default class TripPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT,
   });
 
-  constructor({ tripContainer, pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy }) {
+  constructor({ tripContainer, tripInfoContainer, pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy }) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
@@ -47,6 +49,8 @@ export default class TripPresenter {
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy,
     });
+
+    this.#infoPresenter = new InfoPresenter({ tripInfoContainer });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -205,6 +209,8 @@ export default class TripPresenter {
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
 
+    this.#infoPresenter.removeTripInfo();
+
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
@@ -221,6 +227,11 @@ export default class TripPresenter {
       this.#renderLoading();
       return;
     }
+
+    this.#infoPresenter.init({
+      pointsModel: this.#pointsModel,
+      offersModel: this.#offersModel,
+    });
 
     if (this.points.length === 0) {
       this.#renderNoPoints();
