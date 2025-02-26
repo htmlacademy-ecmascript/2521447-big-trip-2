@@ -26,10 +26,6 @@ export default class NewPointPresenter {
     this.#sourcedOffers = sourcedOffers;
     this.#sourcedDestinations = sourcedDestinations;
 
-    if (this.#newPointComponent !== null) {
-      return;
-    }
-
     this.#newPointComponent = new NewPointView({
       types: this.#types,
       sourcedOffers: this.#sourcedOffers,

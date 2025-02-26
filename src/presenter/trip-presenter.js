@@ -83,6 +83,9 @@ export default class TripPresenter {
       sourcedOffers: this.#offersModel.offers,
       sourcedDestinations: this.#destinationsModel.destinations,
     });
+
+    remove(this.#noPointComponent);
+    render(this.#pointsComponent, this.#tripComponent.element);
   }
 
   #handleModeChange = () => {
@@ -228,16 +231,16 @@ export default class TripPresenter {
       return;
     }
 
+    if (this.points.length === 0) {
+      this.#renderNoPoints();
+      return;
+    }
+
     this.#infoPresenter.init({
       pointsModel: this.#pointsModel,
       offersModel: this.#offersModel,
       destinationsModel: this.#destinationsModel,
     });
-
-    if (this.points.length === 0) {
-      this.#renderNoPoints();
-      return;
-    }
 
     this.#renderSort();
     render(this.#pointsComponent, this.#tripComponent.element);
