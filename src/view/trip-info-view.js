@@ -10,23 +10,23 @@ function infoCostTemplate(totalCost) {
   );
 }
 
-function infoMainTemplate(title) {
+function infoMainTemplate(title, date) {
   return (
     `
     <div class="trip-info__main">
       <h1 class="trip-info__title">${title}</h1>
 
-      <p class="trip-info__dates">18&nbsp;&mdash;&nbsp;20 Mar</p>
+      <p class="trip-info__dates">${date}</p>
     </div>
     `
   );
 }
 
-function tripInfoTemplate(totalCost, title) {
+function tripInfoTemplate(totalCost, title, date) {
   return (
     `
     <section class="trip-main__trip-info  trip-info">
-      ${infoMainTemplate(title)}
+      ${infoMainTemplate(title, date)}
 
       ${infoCostTemplate(totalCost)}
     </section>;
@@ -37,14 +37,16 @@ function tripInfoTemplate(totalCost, title) {
 export default class TripInfo extends AbstractView {
   #totalCost = null;
   #infoTitle = null;
+  #infoDate = null;
 
-  constructor({ totalCost, infoTitle }) {
+  constructor({ totalCost, infoTitle, infoDate }) {
     super();
     this.#totalCost = totalCost;
     this.#infoTitle = infoTitle;
+    this.#infoDate = infoDate;
   }
 
   get template() {
-    return tripInfoTemplate(this.#totalCost, this.#infoTitle);
+    return tripInfoTemplate(this.#totalCost, this.#infoTitle, this.#infoDate);
   }
 }

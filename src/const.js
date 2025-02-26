@@ -6,6 +6,7 @@ const FormatDate = {
   DATE_SCHEDULE: 'HH:mm',
   DATE_SLASHED: 'DD/MM/YY',
   DATE_PICKER_FORMAT: 'd/m/y H:i',
+  DATE_TRIP_INFO: 'DD MMM',
 };
 
 
