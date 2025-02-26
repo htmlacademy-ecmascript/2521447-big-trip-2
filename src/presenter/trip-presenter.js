@@ -231,6 +231,7 @@ export default class TripPresenter {
     this.#infoPresenter.init({
       pointsModel: this.#pointsModel,
       offersModel: this.#offersModel,
+      destinationsModel: this.#destinationsModel,
     });
 
     if (this.points.length === 0) {

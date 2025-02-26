@@ -1,3 +1,5 @@
+const MAX_POINTS_FOR_TRIP_INFO = 3;
+
 const FormatDate = {
   DATE_TIME: 'DD-MM-YYYY',
   DATE_POINT: 'MMM D',
@@ -67,6 +69,7 @@ const TimeLimit = {
 
 
 export {
+  MAX_POINTS_FOR_TRIP_INFO,
   FormatDate,
   MillisecondsInValue,
   FilterType,
