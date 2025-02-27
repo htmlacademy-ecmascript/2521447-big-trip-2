@@ -2,6 +2,8 @@ export default class OffersModel {
   #offersApiService = null;
   #offers = [];
 
+  isError = false;
+
   constructor({ offersApiService }) {
     this.#offersApiService = offersApiService;
   }
@@ -19,6 +21,7 @@ export default class OffersModel {
       this.#offers = await this.#offersApiService.offers;
     } catch (err) {
       this.#offers = [];
+      this.isError = true;
     }
   }
 

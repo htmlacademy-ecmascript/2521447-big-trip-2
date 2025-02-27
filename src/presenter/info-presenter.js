@@ -54,7 +54,7 @@ export default class InfoPresenter {
       separator = ' &mdash; ... &mdash; ';
     }
 
-    return points.map((point) => destinationsModel.getDestinationById(point.destination).name).join(separator);
+    return points.map((point) => destinationsModel.getDestinationById(point.destination)?.name).join(separator);
   }
 
   #getInfoDate(pointsModel) {

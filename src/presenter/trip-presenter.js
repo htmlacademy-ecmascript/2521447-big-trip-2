@@ -3,7 +3,7 @@ import SortView from '../view/sort-view.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import TripView from '../view/trip-view.js';
-import { FilterType, SortType, TimeLimit, UpdateType, UserAction } from '../const.js';
+import { ERROR_MESSAGE, FilterType, SortType, TimeLimit, UpdateType, UserAction } from '../const.js';
 import { sortDateFromDown, sortDurationTimeDown, sortPriceDown } from '../utils/point.js';
 import PointsView from '../view/points-view.js';
 import { filter } from '../utils/filter.js';
@@ -11,6 +11,7 @@ import NewPointPresenter from './new-point-presenter.js';
 import LoadingView from '../view/loading-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import InfoPresenter from './info-presenter.js';
+import ErrorMessageView from '../view/error-message-view.js';
 
 
 export default class TripPresenter {
@@ -27,6 +28,8 @@ export default class TripPresenter {
   #loadingComponent = new LoadingView();
   #newPointPresenter = null;
   #infoPresenter = null;
+
+  #errorMessageComponent = null;
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
@@ -214,6 +217,7 @@ export default class TripPresenter {
 
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
+    remove(this.#errorMessageComponent);
 
     this.#infoPresenter.removeTripInfo();
 
@@ -231,6 +235,16 @@ export default class TripPresenter {
 
     if (this.#isLoading) {
       this.#renderLoading();
+      return;
+    }
+
+    if (
+      this.#destinationsModel.isError ||
+      this.#offersModel.isError ||
+      this.#pointsModel.isError
+    ) {
+      this.#errorMessageComponent = new ErrorMessageView({ errorMessage: ERROR_MESSAGE });
+      render(this.#errorMessageComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
       return;
     }
 

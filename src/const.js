@@ -1,4 +1,5 @@
 const MAX_POINTS_FOR_TRIP_INFO = 3;
+const ERROR_MESSAGE = 'Failed to load latest route information';
 
 const FormatDate = {
   DATE_TIME: 'DD-MM-YYYY',
@@ -71,6 +72,7 @@ const TimeLimit = {
 
 export {
   MAX_POINTS_FOR_TRIP_INFO,
+  ERROR_MESSAGE,
   FormatDate,
   MillisecondsInValue,
   FilterType,
