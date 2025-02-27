@@ -1,18 +1,18 @@
 import flatpickr from 'flatpickr';
 import { FormatDate } from '../const.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { formatString, getDateToForBlankPoint, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
+import { formatString, getMaxDate, getMinDate } from '../utils/point.js';
 
 import 'flatpickr/dist/themes/material_blue.css';
 
 const BLANK_POINT = {
   'basePrice': 0,
-  'dateFrom': new Date(),
-  'dateTo': getDateToForBlankPoint(new Date()),
+  'dateFrom': '',
+  'dateTo': '',
   'destination': '',
   'isFavorite': false,
   'offers': [],
-  'type': 'taxi'
+  'type': 'flight'
 };
 
 function createOffersTemplate(availableOffers, selectedOffers, isDisabled) {
@@ -89,21 +89,16 @@ function createDestinationTemplate(destination) {
 function createTimeTemplate(point, isDisabled) {
   const { id, dateFrom, dateTo } = point;
 
-  const dateFromSlashed = humanizeEventDate(dateFrom, FormatDate.DATE_SLASHED);
-  const dateFromShedule = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
-  const dateToSlashed = humanizeEventDate(dateTo, FormatDate.DATE_SLASHED);
-  const dateToShedule = humanizeEventDate(dateTo, FormatDate.DATE_SCHEDULE);
-
   return (
     `
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-${id}">From</label>
       <input 
         class="event__input  event__input--time" 
-        id="event-start-time-${id}" 
+        id="event-start-time-${id}"
         type="text" 
         name="event-start-time" 
-        value="${dateFromSlashed} ${dateFromShedule}"
+        value="${dateFrom}"
         ${isDisabled ? 'disabled' : ''}
       >
       &mdash;
@@ -113,7 +108,7 @@ function createTimeTemplate(point, isDisabled) {
         id="event-end-time-${id}" 
         type="text" 
         name="event-end-time" 
-        value="${dateToSlashed} ${dateToShedule}"
+        value="${dateTo}"
         ${isDisabled ? 'disabled' : ''}
       >
     </div>

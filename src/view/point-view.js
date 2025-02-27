@@ -19,8 +19,6 @@ function createSelectedPointTemplate(selectedOffer) {
 function createPointTemplate(point, destination, selectedOffers) {
   const { type, basePrice, isFavorite, dateFrom, dateTo } = point;
 
-  const datetimeFrom = humanizeEventDate(dateFrom, FormatDate.DATE_TIME);
-  const datetimeTo = humanizeEventDate(dateTo, FormatDate.DATE_TIME);
   const pointDate = humanizeEventDate(dateFrom, FormatDate.DATE_POINT);
   const pointStart = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
   const pointEnd = humanizeEventDate(dateTo, FormatDate.DATE_SCHEDULE);
@@ -31,16 +29,16 @@ function createPointTemplate(point, destination, selectedOffers) {
     `
     <li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${datetimeFrom}">${pointDate}</time>
+        <time class="event__date" datetime="${dateFrom}">${pointDate}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${destination?.name || ''}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${datetimeFrom}T${pointStart}">${pointStart}</time>
+            <time class="event__start-time" datetime="${dateFrom}">${pointStart}</time>
             &mdash;
-            <time class="event__end-time" datetime="${datetimeTo}T${pointEnd}">${pointEnd}</time>
+            <time class="event__end-time" datetime="${dateTo}">${pointEnd}</time>
           </p>
           <p class="event__duration">${getDurationTime(dateFrom, dateTo)}</p>
         </div>

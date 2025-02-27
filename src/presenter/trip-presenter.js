@@ -47,7 +47,10 @@ export default class TripPresenter {
     this.#newPointPresenter = new NewPointPresenter({
       newPointContainer: this.#pointsComponent.element,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy,
+      onDestroy: () => {
+        onNewPointDestroy();
+        this.#renderNoPoints();
+      },
     });
 
     this.#infoPresenter = new InfoPresenter({ tripInfoContainer });

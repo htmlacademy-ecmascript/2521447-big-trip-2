@@ -30,10 +30,8 @@ const getDurationTime = (start, end) => {
 
     default:
       return Math.floor(dayjs.duration(durationTime).asDays()) < 10 ?
-        `0${Math.floor(dayjs.duration(durationTime).asDays())}D 
-      ${dayjs.duration(durationTime).format('HH[H] mm[M]')}` :
-        `${Math.floor(dayjs.duration(durationTime).asDays())}D 
-      ${dayjs.duration(durationTime).format('HH[H] mm[M]')}`;
+        `0${Math.floor(dayjs.duration(durationTime).asDays())}D ${dayjs.duration(durationTime).format('HH[H] mm[M]')}` :
+        `${Math.floor(dayjs.duration(durationTime).asDays())}D ${dayjs.duration(durationTime).format('HH[H] mm[M]')}`;
   }
 };
 
