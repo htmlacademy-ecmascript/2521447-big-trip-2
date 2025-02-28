@@ -1,9 +1,10 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { formatString, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
-import { FormatDate } from '../const.js';
+import { getMaxDate, getMinDate, humanizeDate } from '../utils/point.js';
+import { DateFormat } from '../const.js';
 import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/themes/material_blue.css';
+import { getCapitalizeValue } from '../utils/common.js';
 
 function createDestinationTemplate(destination) {
   const { description, pictures } = destination;
@@ -56,11 +57,6 @@ function createOffersTemplate(offers, offersChecked, isDisabled) {
 }
 
 function createPointGroupTimeTemplate(dateFrom, dateTo, id, isDisabled) {
-  const dateFromSlashed = humanizeEventDate(dateFrom, FormatDate.DATE_SLASHED);
-  const dateFromShedule = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
-  const dateToSlashed = humanizeEventDate(dateTo, FormatDate.DATE_SLASHED);
-  const dateToShedule = humanizeEventDate(dateTo, FormatDate.DATE_SCHEDULE);
-
   return (
     `
     <div class="event__field-group  event__field-group--time">
@@ -70,7 +66,7 @@ function createPointGroupTimeTemplate(dateFrom, dateTo, id, isDisabled) {
         id="event-start-time-${id}" 
         type="text" 
         name="event-start-time" 
-        value="${dateFromSlashed} ${dateFromShedule}"
+        value="${humanizeDate(dateFrom, DateFormat.DATE)}"
         ${isDisabled ? 'disabled' : ''}
       >
       &mdash;
@@ -80,7 +76,7 @@ function createPointGroupTimeTemplate(dateFrom, dateTo, id, isDisabled) {
         id="event-end-time-${id}" 
         type="text" 
         name="event-end-time" 
-        value="${dateToSlashed} ${dateToShedule}"
+        value="${humanizeDate(dateTo, DateFormat.DATE)}"
         ${isDisabled ? 'disabled' : ''}
       >
     </div>
@@ -103,7 +99,7 @@ function createPointTypeTemplate(currentType, types, isDisabled) {
       <label 
         class="event__type-label event__type-label--${type}" 
         for="event-type-${type}"
-        >${formatString(type)}</label>
+        >${getCapitalizeValue(type)}</label>
     </div
   >`).join('');
 }
@@ -382,7 +378,7 @@ export default class PointEditView extends AbstractStatefulView {
       enableTime: true,
       'time_24hr': true,
       locale: { firstDayOfWeek: 1 },
-      dateFormat: FormatDate.DATE_PICKER_FORMAT,
+      dateFormat: DateFormat.DATEPICKR,
     };
 
     this.#datepickerFrom = flatpickr(

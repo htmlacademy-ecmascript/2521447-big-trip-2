@@ -4,7 +4,7 @@ import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import TripView from '../view/trip-view.js';
 import { ERROR_MESSAGE, FilterType, SortType, TimeLimit, UpdateType, UserAction } from '../const.js';
-import { sortDateFromDown, sortDurationTimeDown, sortPriceDown } from '../utils/point.js';
+import { sortDateAscending, sortDurationTimeDescending, sortPriceDescending } from '../utils/point.js';
 import PointsView from '../view/points-view.js';
 import { filter } from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
@@ -69,12 +69,12 @@ export default class TripPresenter {
 
     switch (this.#currentSortType) {
       case SortType.TIME:
-        return filteredPoints.sort(sortDurationTimeDown);
+        return filteredPoints.sort(sortDurationTimeDescending);
       case SortType.PRICE:
-        return filteredPoints.sort(sortPriceDown);
+        return filteredPoints.sort(sortPriceDescending);
     }
 
-    return filteredPoints.sort(sortDateFromDown);
+    return filteredPoints.sort(sortDateAscending);
   }
 
   init() {

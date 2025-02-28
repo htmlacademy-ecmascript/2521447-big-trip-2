@@ -1,6 +1,6 @@
-import { FormatDate, MAX_POINTS_FOR_TRIP_INFO } from '../const.js';
+import { DateFormat, MAX_POINTS_FOR_TRIP_INFO } from '../const.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
-import { humanizeEventDate, sortDateFromDown } from '../utils/point.js';
+import { humanizeDate, sortDateAscending } from '../utils/point.js';
 import TripInfo from '../view/trip-info-view.js';
 
 export default class InfoPresenter {
@@ -46,7 +46,7 @@ export default class InfoPresenter {
   }
 
   #getInfoTitle(pointsModel, destinationsModel) {
-    let points = [...pointsModel.points].sort(sortDateFromDown);
+    let points = [...pointsModel.points].sort(sortDateAscending);
     let separator = ' &mdash; ';
 
     if (points.length > MAX_POINTS_FOR_TRIP_INFO) {
@@ -58,7 +58,7 @@ export default class InfoPresenter {
   }
 
   #getInfoDate(pointsModel) {
-    const points = [...pointsModel.points].sort(sortDateFromDown);
+    const points = [...pointsModel.points].sort(sortDateAscending);
 
     if (points.length === 0) {
       return '';
@@ -67,8 +67,8 @@ export default class InfoPresenter {
     const firstPoint = points[0];
     const lastPoint = points.pop();
 
-    const tripStart = humanizeEventDate(firstPoint.dateFrom, FormatDate.DATE_TRIP_INFO);
-    const tripEnd = humanizeEventDate(lastPoint.dateTo, FormatDate.DATE_TRIP_INFO);
+    const tripStart = humanizeDate(firstPoint.dateFrom, DateFormat.TRIP_INFO);
+    const tripEnd = humanizeDate(lastPoint.dateTo, DateFormat.TRIP_INFO);
 
     if (tripStart === tripEnd) {
       return tripStart;

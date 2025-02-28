@@ -1,19 +1,18 @@
 const MAX_POINTS_FOR_TRIP_INFO = 3;
 const ERROR_MESSAGE = 'Failed to load latest route information';
 
-const FormatDate = {
-  DATE_TIME: 'DD-MM-YYYY',
-  DATE_POINT: 'MMM D',
-  DATE_SCHEDULE: 'HH:mm',
-  DATE_SLASHED: 'DD/MM/YY',
-  DATE_PICKER_FORMAT: 'd/m/y H:i',
-  DATE_TRIP_INFO: 'DD MMM',
+const DateFormat = {
+  TIME: 'HH:mm',
+  MONTH: 'MMM D',
+  DATE: 'DD/MM/YY HH:mm',
+  DATEPICKR: 'd/m/y H:i',
+  TRIP_INFO: 'DD MMM',
 };
 
 
 const MillisecondsInValue = {
-  MILLISECONDS_IN_HOUR: 1000 * 60 * 60,
-  MILLISECONDS_IN_DAY: 1000 * 60 * 60 * 24,
+  HOUR: 3600000,
+  DAY: 86400000,
 };
 
 
@@ -73,7 +72,7 @@ const TimeLimit = {
 export {
   MAX_POINTS_FOR_TRIP_INFO,
   ERROR_MESSAGE,
-  FormatDate,
+  DateFormat,
   MillisecondsInValue,
   FilterType,
   SortType,

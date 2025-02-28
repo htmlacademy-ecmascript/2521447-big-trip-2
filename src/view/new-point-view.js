@@ -1,7 +1,8 @@
-import flatpickr from 'flatpickr';
-import { FormatDate } from '../const.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { formatString, getMaxDate, getMinDate } from '../utils/point.js';
+import flatpickr from 'flatpickr';
+import { DateFormat } from '../const.js';
+import { getMaxDate, getMinDate, humanizeDate } from '../utils/point.js';
+import { getCapitalizeValue } from '../utils/common.js';
 
 import 'flatpickr/dist/themes/material_blue.css';
 
@@ -60,7 +61,7 @@ function createPointTypeTemplate(point, isDisabled) {
       <label
         class="event__type-label event__type-label--${type}"
         for="event-type-${type}"
-        >${formatString(type)}</label>
+        >${getCapitalizeValue(type)}</label>
     </div
   >`).join('');
 }
@@ -98,7 +99,7 @@ function createTimeTemplate(point, isDisabled) {
         id="event-start-time-${id}"
         type="text" 
         name="event-start-time" 
-        value="${dateFrom}"
+        value="${humanizeDate(dateFrom, DateFormat.DATE)}"
         ${isDisabled ? 'disabled' : ''}
       >
       &mdash;
@@ -108,7 +109,7 @@ function createTimeTemplate(point, isDisabled) {
         id="event-end-time-${id}" 
         type="text" 
         name="event-end-time" 
-        value="${dateTo}"
+        value="${humanizeDate(dateTo, DateFormat.DATE)}"
         ${isDisabled ? 'disabled' : ''}
       >
     </div>
@@ -334,7 +335,7 @@ export default class NewPointView extends AbstractStatefulView {
       enableTime: true,
       'time_24hr': true,
       locale: { firstDayOfWeek: 1 },
-      dateFormat: FormatDate.DATE_PICKER_FORMAT,
+      dateFormat: DateFormat.DATEPICKR,
     };
 
     this.#datepickerFrom = flatpickr(
