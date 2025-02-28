@@ -195,7 +195,6 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
           <button 
             class="event__reset-btn" 
             type="reset"
-            ${isDisabled ? 'disabled' : ''}
           >${isDeleting ? 'Deleting...' : 'Delete'}</button>
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
@@ -214,7 +213,6 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
 
 
 export default class PointEditView extends AbstractStatefulView {
-  #point = null;
   #destination = null;
   #availableOffers = null;
   #sourcedDestinations = null;
@@ -241,7 +239,6 @@ export default class PointEditView extends AbstractStatefulView {
   }
   ) {
     super();
-    this.#point = point;
     this.#destination = destination;
     this.#availableOffers = availableOffers;
     this.#sourcedDestinations = sourcedDestinations;

@@ -206,7 +206,6 @@ function createAddNewPointTemplate(point) {
           <button 
             class="event__reset-btn" 
             type="reset"
-            ${isDisabled ? 'disabled' : ''}
           >Cancel</button>
         </header>
         <section class="event__details">
@@ -226,7 +225,6 @@ export default class NewPointView extends AbstractStatefulView {
 
   #handleFormSubmit = null;
   #handleCloseFormButton = null;
-  #handleDisableFormButton = null;
   #datepickerFrom = null;
   #datepickerTo = null;
 
@@ -264,7 +262,6 @@ export default class NewPointView extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(NewPointView.parseStateToPoint(this._state));
-
   };
 
   #cancelButtonClickHandler = (evt) => {
