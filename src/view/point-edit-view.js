@@ -195,7 +195,6 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
           <button 
             class="event__reset-btn" 
             type="reset"
-            ${isDisabled ? 'disabled' : ''}
           >${isDeleting ? 'Deleting...' : 'Delete'}</button>
           <button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
