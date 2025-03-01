@@ -1,20 +1,10 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
-import { DateFormat } from '../const.js';
+import { BLANK_POINT, DateFormat } from '../const.js';
 import { getMaxDate, getMinDate, humanizeDate } from '../utils/point.js';
 import { getCapitalizeValue } from '../utils/common.js';
 
 import 'flatpickr/dist/themes/material_blue.css';
-
-const BLANK_POINT = {
-  'basePrice': 0,
-  'dateFrom': '',
-  'dateTo': '',
-  'destination': '',
-  'isFavorite': false,
-  'offers': [],
-  'type': 'flight'
-};
 
 function createOffersTemplate(availableOffers, selectedOffers, isDisabled) {
   return (

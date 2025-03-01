@@ -1,6 +1,16 @@
 const MAX_POINTS_FOR_TRIP_INFO = 3;
 const ERROR_MESSAGE = 'Failed to load latest route information';
 
+const BLANK_POINT = {
+  'basePrice': 0,
+  'dateFrom': '',
+  'dateTo': '',
+  'destination': '',
+  'isFavorite': false,
+  'offers': [],
+  'type': 'flight'
+};
+
 const DateFormat = {
   TIME: 'HH:mm',
   MONTH: 'MMM D',
@@ -72,6 +82,7 @@ const TimeLimit = {
 export {
   MAX_POINTS_FOR_TRIP_INFO,
   ERROR_MESSAGE,
+  BLANK_POINT,
   DateFormat,
   MillisecondsInValue,
   FilterType,
