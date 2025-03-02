@@ -125,7 +125,6 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
   const destinationTemplate = destination?.description || destination?.pictures?.length
     ? createDestinationTemplate(destination)
     : '';
-  const isValid = destination && dateFrom && dateTo && basePrice;
 
   return (
     `
@@ -185,7 +184,6 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
               name="event-price" 
               value="${basePrice}"
               min="1"
-              max="100000"
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
@@ -194,7 +192,6 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
             class="event__save-btn  btn  btn--blue" 
             type="submit"
             ${isDisabled ? 'disabled' : ''}
-            ${isValid ? '' : 'disabled'}
           >${isSaving ? 'Saving...' : 'Save'}</button>
           <button 
             class="event__reset-btn" 
@@ -353,7 +350,7 @@ export default class PointEditView extends AbstractStatefulView {
 
   #priceInputHandler = (evt) => {
     evt.preventDefault();
-    this.updateElement({
+    this._setState({
       basePrice: evt.target.value,
     });
   };
