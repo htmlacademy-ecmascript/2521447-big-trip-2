@@ -107,12 +107,15 @@ function createTimeTemplate(point, isDisabled) {
   );
 }
 
-function createAddNewPointTemplate(point) {
-  const { basePrice,
+function createNewPointTemplate(point) {
+  const {
+    destination,
+    dateFrom,
+    dateTo,
+    basePrice,
     availableOffers,
     offers,
     sourcedDestinations,
-    destination,
     isSaving,
     isDisabled,
   } = point;
@@ -126,6 +129,7 @@ function createAddNewPointTemplate(point) {
   const destinationTemplate = destination?.description || destination?.pictures?.length
     ? createDestinationTemplate(destination)
     : '';
+  const isValid = destination && dateFrom && dateTo && basePrice;
 
   return (
     `
@@ -184,6 +188,8 @@ function createAddNewPointTemplate(point) {
               type="number" 
               name="event-price" 
               value="${basePrice}"
+              min="1"
+              max="100000"
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
@@ -192,6 +198,7 @@ function createAddNewPointTemplate(point) {
             class="event__save-btn  btn  btn--blue" 
             type="submit"
             ${isDisabled ? 'disabled' : ''}
+            ${isValid ? '' : 'disabled'}
           >${isSaving ? 'Saving...' : 'Save'}</button>
           <button 
             class="event__reset-btn" 
@@ -229,7 +236,7 @@ export default class NewPointView extends AbstractStatefulView {
   }
 
   get template() {
-    return createAddNewPointTemplate(this._state);
+    return createNewPointTemplate(this._state);
   }
 
   _restoreHandlers() {
@@ -277,7 +284,7 @@ export default class NewPointView extends AbstractStatefulView {
   };
 
   #pointPriceChangeHandler = (evt) => {
-    this._setState({
+    this.updateElement({
       basePrice: evt.target.value
     });
   };

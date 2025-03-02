@@ -125,6 +125,7 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
   const destinationTemplate = destination?.description || destination?.pictures?.length
     ? createDestinationTemplate(destination)
     : '';
+  const isValid = destination && dateFrom && dateTo && basePrice;
 
   return (
     `
@@ -183,6 +184,8 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
               type="number" 
               name="event-price" 
               value="${basePrice}"
+              min="1"
+              max="100000"
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
@@ -191,6 +194,7 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
             class="event__save-btn  btn  btn--blue" 
             type="submit"
             ${isDisabled ? 'disabled' : ''}
+            ${isValid ? '' : 'disabled'}
           >${isSaving ? 'Saving...' : 'Save'}</button>
           <button 
             class="event__reset-btn" 
@@ -286,7 +290,7 @@ export default class PointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__type-list')
       .addEventListener('change', this.#pointTypeChangeHandler);
     this.element.querySelector('.event__input--price')
-      .addEventListener('input', this.#priceInputHandler);
+      .addEventListener('change', this.#priceInputHandler);
     this.element.querySelectorAll('.event__offer-checkbox')
       .forEach((offerButton) => offerButton
         .addEventListener('change', this.#offerCheckboxHandler));
@@ -349,7 +353,7 @@ export default class PointEditView extends AbstractStatefulView {
 
   #priceInputHandler = (evt) => {
     evt.preventDefault();
-    this._setState({
+    this.updateElement({
       basePrice: evt.target.value,
     });
   };
