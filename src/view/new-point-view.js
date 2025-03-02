@@ -110,8 +110,6 @@ function createTimeTemplate(point, isDisabled) {
 function createNewPointTemplate(point) {
   const {
     destination,
-    dateFrom,
-    dateTo,
     basePrice,
     availableOffers,
     offers,
@@ -129,7 +127,6 @@ function createNewPointTemplate(point) {
   const destinationTemplate = destination?.description || destination?.pictures?.length
     ? createDestinationTemplate(destination)
     : '';
-  const isValid = destination && dateFrom && dateTo && basePrice;
 
   return (
     `
@@ -189,7 +186,6 @@ function createNewPointTemplate(point) {
               name="event-price" 
               value="${basePrice}"
               min="1"
-              max="100000"
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
@@ -198,7 +194,6 @@ function createNewPointTemplate(point) {
             class="event__save-btn  btn  btn--blue" 
             type="submit"
             ${isDisabled ? 'disabled' : ''}
-            ${isValid ? '' : 'disabled'}
           >${isSaving ? 'Saving...' : 'Save'}</button>
           <button 
             class="event__reset-btn" 
@@ -284,19 +279,19 @@ export default class NewPointView extends AbstractStatefulView {
   };
 
   #pointPriceChangeHandler = (evt) => {
-    this.updateElement({
+    this._setState({
       basePrice: evt.target.value
     });
   };
 
   #offerCheckboxHandler = (evt) => {
     const selectedOffer = evt.target.id;
-    const selectedOffers = this._state.offers;
+    let selectedOffers = this._state.offers;
 
     if (evt.target.checked) {
       selectedOffers.push(selectedOffer);
     } else {
-      selectedOffers.pop(selectedOffer);
+      selectedOffers = selectedOffers.filter((offer) => offer !== selectedOffer);
     }
 
     this._setState({
