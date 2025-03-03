@@ -1,19 +1,10 @@
-import flatpickr from 'flatpickr';
-import { FormatDate } from '../const.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { formatString, getDateToForBlankPoint, getMaxDate, getMinDate, humanizeEventDate } from '../utils/point.js';
+import flatpickr from 'flatpickr';
+import { BLANK_POINT, DateFormat } from '../const.js';
+import { getMaxDate, getMinDate, humanizeDate } from '../utils/point.js';
+import { getCapitalizeValue } from '../utils/common.js';
 
 import 'flatpickr/dist/themes/material_blue.css';
-
-const BLANK_POINT = {
-  'basePrice': 0,
-  'dateFrom': new Date(),
-  'dateTo': getDateToForBlankPoint(new Date()),
-  'destination': '',
-  'isFavorite': false,
-  'offers': [],
-  'type': 'taxi'
-};
 
 function createOffersTemplate(availableOffers, selectedOffers, isDisabled) {
   return (
@@ -60,7 +51,7 @@ function createPointTypeTemplate(point, isDisabled) {
       <label
         class="event__type-label event__type-label--${type}"
         for="event-type-${type}"
-        >${formatString(type)}</label>
+        >${getCapitalizeValue(type)}</label>
     </div
   >`).join('');
 }
@@ -89,21 +80,16 @@ function createDestinationTemplate(destination) {
 function createTimeTemplate(point, isDisabled) {
   const { id, dateFrom, dateTo } = point;
 
-  const dateFromSlashed = humanizeEventDate(dateFrom, FormatDate.DATE_SLASHED);
-  const dateFromShedule = humanizeEventDate(dateFrom, FormatDate.DATE_SCHEDULE);
-  const dateToSlashed = humanizeEventDate(dateTo, FormatDate.DATE_SLASHED);
-  const dateToShedule = humanizeEventDate(dateTo, FormatDate.DATE_SCHEDULE);
-
   return (
     `
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-${id}">From</label>
       <input 
         class="event__input  event__input--time" 
-        id="event-start-time-${id}" 
+        id="event-start-time-${id}"
         type="text" 
         name="event-start-time" 
-        value="${dateFromSlashed} ${dateFromShedule}"
+        value="${humanizeDate(dateFrom, DateFormat.DATE)}"
         ${isDisabled ? 'disabled' : ''}
       >
       &mdash;
@@ -113,7 +99,7 @@ function createTimeTemplate(point, isDisabled) {
         id="event-end-time-${id}" 
         type="text" 
         name="event-end-time" 
-        value="${dateToSlashed} ${dateToShedule}"
+        value="${humanizeDate(dateTo, DateFormat.DATE)}"
         ${isDisabled ? 'disabled' : ''}
       >
     </div>
@@ -121,12 +107,13 @@ function createTimeTemplate(point, isDisabled) {
   );
 }
 
-function createAddNewPointTemplate(point) {
-  const { basePrice,
+function createNewPointTemplate(point) {
+  const {
+    destination,
+    basePrice,
     availableOffers,
     offers,
     sourcedDestinations,
-    destination,
     isSaving,
     isDisabled,
   } = point;
@@ -198,6 +185,7 @@ function createAddNewPointTemplate(point) {
               type="number" 
               name="event-price" 
               value="${basePrice}"
+              min="1"
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
@@ -210,7 +198,6 @@ function createAddNewPointTemplate(point) {
           <button 
             class="event__reset-btn" 
             type="reset"
-            ${isDisabled ? 'disabled' : ''}
           >Cancel</button>
         </header>
         <section class="event__details">
@@ -230,7 +217,6 @@ export default class NewPointView extends AbstractStatefulView {
 
   #handleFormSubmit = null;
   #handleCloseFormButton = null;
-  #handleDisableFormButton = null;
   #datepickerFrom = null;
   #datepickerTo = null;
 
@@ -245,7 +231,7 @@ export default class NewPointView extends AbstractStatefulView {
   }
 
   get template() {
-    return createAddNewPointTemplate(this._state);
+    return createNewPointTemplate(this._state);
   }
 
   _restoreHandlers() {
@@ -268,7 +254,6 @@ export default class NewPointView extends AbstractStatefulView {
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(NewPointView.parseStateToPoint(this._state));
-
   };
 
   #cancelButtonClickHandler = (evt) => {
@@ -301,12 +286,12 @@ export default class NewPointView extends AbstractStatefulView {
 
   #offerCheckboxHandler = (evt) => {
     const selectedOffer = evt.target.id;
-    const selectedOffers = this._state.offers;
+    let selectedOffers = this._state.offers;
 
     if (evt.target.checked) {
       selectedOffers.push(selectedOffer);
     } else {
-      selectedOffers.pop(selectedOffer);
+      selectedOffers = selectedOffers.filter((offer) => offer !== selectedOffer);
     }
 
     this._setState({
@@ -339,7 +324,7 @@ export default class NewPointView extends AbstractStatefulView {
       enableTime: true,
       'time_24hr': true,
       locale: { firstDayOfWeek: 1 },
-      dateFormat: FormatDate.DATE_PICKER_FORMAT,
+      dateFormat: DateFormat.DATEPICKR,
     };
 
     this.#datepickerFrom = flatpickr(

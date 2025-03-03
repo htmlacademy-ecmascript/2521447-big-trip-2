@@ -3,13 +3,15 @@ import SortView from '../view/sort-view.js';
 import NoPointView from '../view/no-point-view.js';
 import PointPresenter from './point-presenter.js';
 import TripView from '../view/trip-view.js';
-import { FilterType, SortType, TimeLimit, UpdateType, UserAction } from '../const.js';
-import { sortDateFromDown, sortDurationTimeDown, sortPriceDown } from '../utils/point.js';
+import { ERROR_MESSAGE, FilterType, SortType, TimeLimit, UpdateType, UserAction } from '../const.js';
+import { sortDateAscending, sortDurationTimeDescending, sortPriceDescending } from '../utils/point.js';
 import PointsView from '../view/points-view.js';
 import { filter } from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import LoadingView from '../view/loading-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import InfoPresenter from './info-presenter.js';
+import ErrorMessageView from '../view/error-message-view.js';
 
 
 export default class TripPresenter {
@@ -25,6 +27,9 @@ export default class TripPresenter {
   #pointsComponent = new PointsView();
   #loadingComponent = new LoadingView();
   #newPointPresenter = null;
+  #infoPresenter = null;
+
+  #errorMessageComponent = null;
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
@@ -35,7 +40,7 @@ export default class TripPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT,
   });
 
-  constructor({ tripContainer, pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy }) {
+  constructor({ tripContainer, tripInfoContainer, pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy }) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
@@ -45,8 +50,13 @@ export default class TripPresenter {
     this.#newPointPresenter = new NewPointPresenter({
       newPointContainer: this.#pointsComponent.element,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy,
+      onDestroy: () => {
+        onNewPointDestroy();
+        this.#renderNoPoints();
+      },
     });
+
+    this.#infoPresenter = new InfoPresenter({ tripInfoContainer });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -59,12 +69,12 @@ export default class TripPresenter {
 
     switch (this.#currentSortType) {
       case SortType.TIME:
-        return filteredPoints.sort(sortDurationTimeDown);
+        return filteredPoints.sort(sortDurationTimeDescending);
       case SortType.PRICE:
-        return filteredPoints.sort(sortPriceDown);
+        return filteredPoints.sort(sortPriceDescending);
     }
 
-    return filteredPoints.sort(sortDateFromDown);
+    return filteredPoints.sort(sortDateAscending);
   }
 
   init() {
@@ -79,6 +89,9 @@ export default class TripPresenter {
       sourcedOffers: this.#offersModel.offers,
       sourcedDestinations: this.#destinationsModel.destinations,
     });
+
+    remove(this.#noPointComponent);
+    render(this.#pointsComponent, this.#tripComponent.element);
   }
 
   #handleModeChange = () => {
@@ -204,6 +217,9 @@ export default class TripPresenter {
 
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
+    remove(this.#errorMessageComponent);
+
+    this.#infoPresenter.removeTripInfo();
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
@@ -222,10 +238,26 @@ export default class TripPresenter {
       return;
     }
 
+    if (
+      this.#destinationsModel.isError ||
+      this.#offersModel.isError ||
+      this.#pointsModel.isError
+    ) {
+      this.#errorMessageComponent = new ErrorMessageView({ errorMessage: ERROR_MESSAGE });
+      render(this.#errorMessageComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
+      return;
+    }
+
     if (this.points.length === 0) {
       this.#renderNoPoints();
       return;
     }
+
+    this.#infoPresenter.init({
+      pointsModel: this.#pointsModel,
+      offersModel: this.#offersModel,
+      destinationsModel: this.#destinationsModel,
+    });
 
     this.#renderSort();
     render(this.#pointsComponent, this.#tripComponent.element);

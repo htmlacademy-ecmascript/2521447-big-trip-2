@@ -1,15 +1,28 @@
-const FormatDate = {
-  DATE_TIME: 'DD-MM-YYYY',
-  DATE_POINT: 'MMM D',
-  DATE_SCHEDULE: 'HH:mm',
-  DATE_SLASHED: 'DD/MM/YY',
-  DATE_PICKER_FORMAT: 'd/m/y H:i',
+const MAX_POINTS_FOR_TRIP_INFO = 3;
+const ERROR_MESSAGE = 'Failed to load latest route information';
+
+const BLANK_POINT = {
+  'basePrice': 0,
+  'dateFrom': '',
+  'dateTo': '',
+  'destination': '',
+  'isFavorite': false,
+  'offers': [],
+  'type': 'flight'
+};
+
+const DateFormat = {
+  TIME: 'HH:mm',
+  MONTH: 'MMM D',
+  DATE: 'DD/MM/YY HH:mm',
+  DATEPICKR: 'd/m/y H:i',
+  TRIP_INFO: 'DD MMM',
 };
 
 
 const MillisecondsInValue = {
-  MILLISECONDS_IN_HOUR: 1000 * 60 * 60,
-  MILLISECONDS_IN_DAY: 1000 * 60 * 60 * 24,
+  HOUR: 3600000,
+  DAY: 86400000,
 };
 
 
@@ -55,9 +68,9 @@ const UpdateType = {
 
 const NoPointsTextType = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first point',
-  [FilterType.FUTURE]: 'There are no future points now',
-  [FilterType.PRESENT]: 'There are no present points now',
-  [FilterType.PAST]: 'There are no past points now',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.PAST]: 'There are no past events now',
 };
 
 const TimeLimit = {
@@ -67,7 +80,10 @@ const TimeLimit = {
 
 
 export {
-  FormatDate,
+  MAX_POINTS_FOR_TRIP_INFO,
+  ERROR_MESSAGE,
+  BLANK_POINT,
+  DateFormat,
   MillisecondsInValue,
   FilterType,
   SortType,

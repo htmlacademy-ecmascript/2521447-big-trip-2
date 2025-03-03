@@ -12,7 +12,7 @@ function createFilterItemTemplate(filter, currentFilterType) {
         class="trip-filters__filter-input  visually-hidden" 
         type="radio" 
         name="trip-filter" 
-        value="${type}" 
+        value="${type}"
         ${type === currentFilterType ? 'checked' : ''}
         ${count === 0 ? 'disabled' : ''}
       >
@@ -28,8 +28,8 @@ function createFilterTemplate(filterItems, currentFilterType) {
   return (
     `
     <form class="trip-filters" action="#" method="get">
-      <button class="visually-hidden" type="submit">Accept filter</button>
       ${filterItemsTemplate}
+      <button class="visually-hidden" type="submit">Accept filter</button>
     </form >
   `
   );
