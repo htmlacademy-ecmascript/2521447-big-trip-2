@@ -1,10 +1,9 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { getMaxDate, getMinDate, humanizeDate } from '../utils/point.js';
 import { DateFormat } from '../const.js';
-import flatpickr from 'flatpickr';
-
-import 'flatpickr/dist/themes/material_blue.css';
 import { getCapitalizeValue } from '../utils/common.js';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/themes/material_blue.css';
 
 function createDestinationTemplate(destination) {
   const { description, pictures } = destination;
@@ -95,7 +94,7 @@ function createPointTypeTemplate(currentType, types, isDisabled) {
         value="${type}"
         ${currentType === type ? 'checked' : ''}
         ${isDisabled ? 'disabled' : ''}
-      />
+      >
       <label 
         class="event__type-label event__type-label--${type}" 
         for="event-type-${type}"
@@ -153,9 +152,7 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
             <label 
               class="event__label  event__type-output" 
               for="event-destination-${id}"
-            >
-              ${type}
-            </label>
+            >${type}</label>
             <input 
               class="event__input  event__input--destination" 
               id="event-destination-${id}"
@@ -211,7 +208,6 @@ function createPointEditTemplate(point, destination, types, availableOffers, sel
     `
   );
 }
-
 
 export default class PointEditView extends AbstractStatefulView {
   #destination = null;
@@ -293,9 +289,9 @@ export default class PointEditView extends AbstractStatefulView {
         .addEventListener('change', this.#offerCheckboxHandler));
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#inputDestinationChangeHandler);
-    this.#setDatepicker();
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#formDeleteClickHandler);
+    this.#setDatepickers();
   }
 
   #formSubmitHandler = (evt) => {
@@ -371,7 +367,7 @@ export default class PointEditView extends AbstractStatefulView {
 
   };
 
-  #setDatepicker() {
+  #setDatepickers() {
     const datePickerConfig = {
       enableTime: true,
       'time_24hr': true,

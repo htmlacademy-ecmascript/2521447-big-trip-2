@@ -11,12 +11,10 @@ import { AUTHORIZATION, BASE_URL } from './api.js';
 import DestinationsApiService from './api-service/destinations-api-service.js';
 import OffersApiService from './api-service/offers-api-service.js';
 
-
 const siteTripMainElement = document.querySelector('.trip-main');
 const siteFiltersElement = siteTripMainElement.querySelector('.trip-controls__filters');
 const sitePageMainElement = document.querySelector('.page-main');
 const siteBodyContainerElement = sitePageMainElement.querySelector('.page-body__container');
-
 
 const pointsModel = new PointsModel({
   pointsApiService: new PointsApiService(BASE_URL, AUTHORIZATION)

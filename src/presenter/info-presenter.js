@@ -7,8 +7,6 @@ export default class InfoPresenter {
   #tripInfoContainer = null;
   #tripInfoComponent = null;
 
-  #total = null;
-
   constructor({ tripInfoContainer }) {
     this.#tripInfoContainer = tripInfoContainer;
   }

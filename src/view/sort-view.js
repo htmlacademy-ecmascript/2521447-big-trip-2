@@ -1,7 +1,6 @@
 import { SortType, SortDisabled } from '../const.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
-
 function createSortItem(currentSortType, type) {
   return (
     `
@@ -16,12 +15,13 @@ function createSortItem(currentSortType, type) {
           ${type === currentSortType ? 'checked' : ''}
           ${SortDisabled[type]}
         >
-        <label class="trip-sort__btn" for="sort-${type}">${type}</label>
+        <label class="trip-sort__btn" for="sort-${type}">
+          ${type}
+        </label>
       </div>
     `
   );
 }
-
 
 function createSortTemplate(currentSortType) {
   return (
@@ -32,7 +32,6 @@ function createSortTemplate(currentSortType) {
     `
   );
 }
-
 
 export default class SortView extends AbstractView {
   #currentSortType = null;

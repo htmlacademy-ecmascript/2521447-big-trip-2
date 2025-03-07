@@ -13,7 +13,6 @@ import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import InfoPresenter from './info-presenter.js';
 import ErrorMessageView from '../view/error-message-view.js';
 
-
 export default class TripPresenter {
   #tripContainer = null;
   #pointsModel = null;

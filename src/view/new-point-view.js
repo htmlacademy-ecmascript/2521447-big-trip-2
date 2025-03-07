@@ -1,9 +1,8 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import flatpickr from 'flatpickr';
 import { BLANK_POINT, DateFormat } from '../const.js';
 import { getMaxDate, getMinDate, humanizeDate } from '../utils/point.js';
 import { getCapitalizeValue } from '../utils/common.js';
-
+import flatpickr from 'flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
 
 function createOffersTemplate(availableOffers, selectedOffers, isDisabled) {
@@ -47,7 +46,7 @@ function createPointTypeTemplate(point, isDisabled) {
         value="${type}"
         ${currentType === type ? 'checked' : ''}
         ${isDisabled ? 'disabled' : ''}
-      />
+      >
       <label
         class="event__type-label event__type-label--${type}"
         for="event-type-${type}"
@@ -144,11 +143,9 @@ function createNewPointTemplate(point) {
               type="checkbox"
               ${isDisabled ? 'disabled' : ''}
             >
-
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
-
                 ${typeTemplate}
               </fieldset>
             </div>
@@ -168,7 +165,7 @@ function createNewPointTemplate(point) {
               ${isDisabled ? 'disabled' : ''}
             >
             <datalist id="destination-list">
-            ${datalistOptions}
+              ${datalistOptions}
             </datalist>
           </div>
 
@@ -210,7 +207,6 @@ function createNewPointTemplate(point) {
   `
   );
 }
-
 
 export default class NewPointView extends AbstractStatefulView {
   #point = BLANK_POINT;
@@ -264,10 +260,14 @@ export default class NewPointView extends AbstractStatefulView {
   removeElement() {
     super.removeElement();
 
-    this.#datepickerFrom.destroy();
-    this.#datepickerFrom = null;
-    this.#datepickerTo.destroy();
-    this.#datepickerTo = null;
+    if (this.#datepickerFrom) {
+      this.#datepickerFrom.destroy();
+      this.#datepickerFrom = null;
+    }
+    if (this.#datepickerTo) {
+      this.#datepickerTo.destroy();
+      this.#datepickerTo = null;
+    }
   }
 
   #pointTypeChangeHandler = (evt) => {

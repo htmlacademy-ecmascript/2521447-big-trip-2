@@ -3,7 +3,6 @@ import { remove, render, RenderPosition } from '../framework/render.js';
 import { isEsc } from '../utils/common.js';
 import NewPointView from '../view/new-point-view.js';
 
-
 export default class NewPointPresenter {
   #newPointContainer = null;
   #handleDataChange = null;
