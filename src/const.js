@@ -19,12 +19,10 @@ const DateFormat = {
   TRIP_INFO: 'DD MMM',
 };
 
-
 const MillisecondsInValue = {
   HOUR: 3600000,
   DAY: 86400000,
 };
-
 
 const FilterType = {
   EVERYTHING: 'everything',
@@ -32,7 +30,6 @@ const FilterType = {
   PRESENT: 'present',
   PAST: 'past',
 };
-
 
 const SortType = {
   DAY: 'day',
@@ -42,7 +39,6 @@ const SortType = {
   OFFERS: 'offers',
 };
 
-
 const SortDisabled = {
   [SortType.DAY]: '',
   [SortType.EVENT]: 'disabled',
@@ -51,13 +47,11 @@ const SortDisabled = {
   [SortType.OFFERS]: 'disabled',
 };
 
-
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
   ADD_POINT: 'ADD_POINT',
   DELETE_POINT: 'DELETE_POINT',
 };
-
 
 const UpdateType = {
   PATCH: 'PATCH',
@@ -78,7 +72,6 @@ const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
-
 export {
   MAX_POINTS_FOR_TRIP_INFO,
   ERROR_MESSAGE,
@@ -91,5 +84,5 @@ export {
   UserAction,
   UpdateType,
   NoPointsTextType,
-  TimeLimit
+  TimeLimit,
 };

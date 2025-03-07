@@ -2,9 +2,9 @@ import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeDate, getFormattedDurationTime } from '../utils/point.js';
 import { DateFormat } from '../const.js';
 
-
 function createSelectedPointTemplate(selectedOffer) {
   const { title, price } = selectedOffer;
+
   return (
     `<li class="event__offer">
       <span class="event__offer-title">${title}</span>
@@ -15,11 +15,9 @@ function createSelectedPointTemplate(selectedOffer) {
   );
 }
 
-
 function createPointTemplate(point, destination, selectedOffers) {
   const { type, basePrice, isFavorite, dateFrom, dateTo } = point;
   const favoriteClassName = isFavorite ? 'event__favorite-btn--active' : '';
-
 
   return (
     `
@@ -63,16 +61,14 @@ function createPointTemplate(point, destination, selectedOffers) {
 export default class PointView extends AbstractView {
   #point = null;
   #destination = null;
-  #availableOffers = null;
   #selectedOffers = null;
   #handleEditClick = null;
   #handleFavoriteClick = null;
 
-  constructor({ point, destination, availableOffers, selectedOffers, onEditClick, onFavoriteClick }) {
+  constructor({ point, destination, selectedOffers, onEditClick, onFavoriteClick }) {
     super();
     this.#point = point;
     this.#destination = destination;
-    this.#availableOffers = availableOffers;
     this.#selectedOffers = selectedOffers;
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;

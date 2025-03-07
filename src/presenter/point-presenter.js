@@ -4,12 +4,10 @@ import { isEsc } from '../utils/common.js';
 import PointEditView from '../view/point-edit-view.js';
 import PointView from '../view/point-view.js';
 
-
 const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
 };
-
 
 export default class PointPresenter {
   #pointsContainer = null;
@@ -51,7 +49,6 @@ export default class PointPresenter {
     this.#pointComponent = new PointView({
       point: this.#point,
       destination: this.#destination,
-      availableOffers: this.#availableOffers,
       selectedOffers: this.#selectedOffers,
       onEditClick: this.#handleEditClick,
       onFavoriteClick: this.#handleFavoriteClick,

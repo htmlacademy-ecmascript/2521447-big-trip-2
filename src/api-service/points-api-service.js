@@ -1,7 +1,6 @@
 import { Method, Route } from '../api.js';
 import ApiService from '../framework/api-service.js';
 
-
 export default class PointsApiService extends ApiService {
   get points() {
     return this._load({ route: Route.POINTS }).then(ApiService.parseResponse);
