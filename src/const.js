@@ -2,7 +2,7 @@ const MAX_POINTS_FOR_TRIP_INFO = 3;
 const ERROR_MESSAGE = 'Failed to load latest route information';
 
 const BLANK_POINT = {
-  'basePrice': 1,
+  'basePrice': 0,
   'dateFrom': '',
   'dateTo': '',
   'destination': '',
