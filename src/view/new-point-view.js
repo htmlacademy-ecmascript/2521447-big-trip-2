@@ -183,6 +183,7 @@ function createNewPointTemplate(point) {
               name="event-price" 
               value="${basePrice}"
               min="1"
+              autofocus
               ${isDisabled ? 'disabled' : ''}
             >
           </div>
@@ -308,13 +309,13 @@ export default class NewPointView extends AbstractStatefulView {
   };
 
   #dateFromInputHandler = ([selectedDate]) => {
-    this.updateElement({
+    this._setState({
       dateFrom: selectedDate,
     });
   };
 
   #dateToInputHandler = ([selectedDate]) => {
-    this.updateElement({
+    this._setState({
       dateTo: selectedDate,
     });
   };

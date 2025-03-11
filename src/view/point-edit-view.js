@@ -324,13 +324,13 @@ export default class PointEditView extends AbstractStatefulView {
   };
 
   #dateFromInputHandler = ([selectedDate]) => {
-    this.updateElement({
+    this._setState({
       dateFrom: selectedDate,
     });
   };
 
   #dateToInputHandler = ([selectedDate]) => {
-    this.updateElement({
+    this._setState({
       dateTo: selectedDate,
     });
   };
@@ -364,7 +364,6 @@ export default class PointEditView extends AbstractStatefulView {
     this._setState({
       offers: selectedOffers,
     });
-
   };
 
   #setDatepickers() {
