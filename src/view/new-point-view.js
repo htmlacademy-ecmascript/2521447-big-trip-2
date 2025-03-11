@@ -333,7 +333,7 @@ export default class NewPointView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         maxDate: getMaxDate(this._state.dateTo),
-        onClose: this.#dateFromInputHandler,
+        onChange: this.#dateFromInputHandler,
       }
     );
 
@@ -342,7 +342,7 @@ export default class NewPointView extends AbstractStatefulView {
       {
         ...datePickerConfig,
         minDate: getMinDate(this._state.dateFrom),
-        onClose: this.#dateToInputHandler,
+        onChange: this.#dateToInputHandler,
       }
     );
   }
