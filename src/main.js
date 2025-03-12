@@ -35,6 +35,7 @@ const tripPresenter = new TripPresenter({
   offersModel: offersModel,
   filterModel: filterModel,
   onNewPointDestroy: handleNewPointFormClose,
+  disableNewPointButton,
 });
 
 const filterPresenter = new FilterPresenter({
@@ -53,6 +54,10 @@ function handleNewPointFormClose() {
 
 function handleNewPointButtonClick() {
   tripPresenter.createPoint();
+  newPointButtonComponent.element.disabled = true;
+}
+
+function disableNewPointButton() {
   newPointButtonComponent.element.disabled = true;
 }
 

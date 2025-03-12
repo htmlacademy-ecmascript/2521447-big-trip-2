@@ -1,7 +1,7 @@
 import { DateFormat, MAX_POINTS_FOR_TRIP_INFO } from '../const.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
 import { humanizeDate, sortDateAscending } from '../utils/point.js';
-import TripInfo from '../view/trip-info-view.js';
+import TripInfoView from '../view/trip-info-view.js';
 
 export default class InfoPresenter {
   #tripInfoContainer = null;
@@ -13,7 +13,7 @@ export default class InfoPresenter {
 
   init({ pointsModel, offersModel, destinationsModel }) {
 
-    this.#tripInfoComponent = new TripInfo({
+    this.#tripInfoComponent = new TripInfoView({
       totalCost: this.#getTotalCost(pointsModel, offersModel),
       infoTitle: this.#getInfoTitle(pointsModel, destinationsModel),
       infoDate: this.#getInfoDate(pointsModel),
