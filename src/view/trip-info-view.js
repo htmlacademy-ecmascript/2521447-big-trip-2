@@ -34,7 +34,7 @@ function tripInfoTemplate(totalCost, title, date) {
   );
 }
 
-export default class TripInfo extends AbstractView {
+export default class TripInfoView extends AbstractView {
   #totalCost = null;
   #infoTitle = null;
   #infoDate = null;

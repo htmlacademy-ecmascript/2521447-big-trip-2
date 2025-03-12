@@ -29,6 +29,7 @@ export default class TripPresenter {
   #infoPresenter = null;
 
   #errorMessageComponent = null;
+  #disableNewPointButton = null;
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
@@ -39,12 +40,22 @@ export default class TripPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT,
   });
 
-  constructor({ tripContainer, tripInfoContainer, pointsModel, destinationsModel, offersModel, filterModel, onNewPointDestroy }) {
+  constructor({
+    tripContainer,
+    tripInfoContainer,
+    pointsModel,
+    destinationsModel,
+    offersModel,
+    filterModel,
+    onNewPointDestroy,
+    disableNewPointButton
+  }) {
     this.#tripContainer = tripContainer;
     this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#filterModel = filterModel;
+    this.#disableNewPointButton = disableNewPointButton;
 
     this.#newPointPresenter = new NewPointPresenter({
       newPointContainer: this.#pointsComponent.element,
@@ -242,6 +253,7 @@ export default class TripPresenter {
       this.#offersModel.isError ||
       this.#pointsModel.isError
     ) {
+      this.#disableNewPointButton();
       this.#errorMessageComponent = new ErrorMessageView({ errorMessage: ERROR_MESSAGE });
       render(this.#errorMessageComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
       return;
